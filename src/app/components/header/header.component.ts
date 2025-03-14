@@ -14,7 +14,7 @@ import { SidebarService } from '../../services/sidebar.service';
 
 @Component({
   selector: 'app-header',
-  imports: [Menubar, BadgeModule, AvatarModule, InputTextModule, Ripple, ButtonModule],
+  imports: [CommonModule, Menubar, BadgeModule, AvatarModule, InputTextModule, Ripple, ButtonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
   standalone: true,

@@ -16,11 +16,7 @@
       <div class="sidebar-menu">
         <p-menu [model]="items">
           <ng-template #item let-item>
-            <a *ngIf="item.route" [routerLink]="item.route" class="menu-item">
-              <span [class]="item.icon"></span>
-              <span>{{ item.label }}</span>
-            </a>
-            <a *ngIf="!item.route" [href]="item.url" class="menu-item">
+            <a *ngIf="item.route" [routerLink]="item.route" class="menu-item" (click)="closeSidebar()">
               <span [class]="item.icon"></span>
               <span>{{ item.label }}</span>
             </a>
