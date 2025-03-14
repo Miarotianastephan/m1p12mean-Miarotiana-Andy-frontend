@@ -1,8 +1,16 @@
-<header>
-    <nav>
-        <span routerLink="/">{{title}}</span>
-        <ul>
-            <li routerLink="/todos">Todos</li>
-        </ul>
-    </nav>
-</header>
+
+    <div class="card w-full">
+        <p-menubar>
+            <ng-template #start>
+                <p-button (click)="toggleSidebar()" icon="pi pi-bars" class="sidebar-toggle"></p-button>
+                <p></p>
+            </ng-template>
+            
+            <ng-template #end>
+                <div class="flex items-center gap-2">
+                    <input type="text" pInputText placeholder="Search" class="w-36" />
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+                </div>
+            </ng-template>
+        </p-menubar>
+    </div>

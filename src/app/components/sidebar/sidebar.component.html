@@ -1,0 +1,41 @@
+<p-drawer [(visible)]="visible">
+  <ng-template #headless>
+    <div class="sidebar-container">
+      <!-- Header du sidebar -->
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg width="31" height="33" viewBox="0 0 31 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="..." />
+          </svg>
+          <span class="sidebar-title">E-Station</span>
+        </div>
+        <p-button type="button" (click)="closeSidebar()" icon="pi pi-times" class="close-btn"></p-button>
+      </div>
+
+      <!-- Contenu du menu -->
+      <div class="sidebar-menu">
+        <p-menu [model]="items">
+          <ng-template #item let-item>
+            <a *ngIf="item.route" [routerLink]="item.route" class="menu-item">
+              <span [class]="item.icon"></span>
+              <span>{{ item.label }}</span>
+            </a>
+            <a *ngIf="!item.route" [href]="item.url" class="menu-item">
+              <span [class]="item.icon"></span>
+              <span>{{ item.label }}</span>
+            </a>
+          </ng-template>
+        </p-menu>
+      </div>
+
+      <!-- Footer du sidebar -->
+      <div class="sidebar-footer">
+        <hr />
+        <a pRipple class="user-profile">
+          <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+          <span class="user-name">User Name</span>
+        </a>
+      </div>
+    </div>
+  </ng-template>
+</p-drawer>
