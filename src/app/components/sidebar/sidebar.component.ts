@@ -32,8 +32,9 @@ export class SidebarComponent implements OnInit {
       {
         label: 'Navigation',
         items: [
-          { label: 'Accueil', icon: 'pi pi-palette', route: '/' },
-          { label: 'External', icon: 'pi pi-home', route: '/todos' }
+          { label: 'Accueil', icon: 'pi pi-home', route: '/' },
+          { label: 'Rendez-vous', icon: 'pi pi-calendar', route: '/mecanicien/rdv' },
+          { label: 'Mécanicien', icon: 'pi pi-users', route: '/mecanicien/meca' },
         ]
       }
     ];

@@ -10,6 +10,7 @@ export const routes: Routes = [
         children: [
           { path: '', component: HomeComponent },
           { path: 'todos', component: TodosComponent },
+          { path: 'mecanicien', loadChildren: () => import('./pages/manager/manager.routes') },
         ]
     },
 ];
