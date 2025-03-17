@@ -5,10 +5,13 @@ import { ProblemReport } from '../../../model/problem-report.model';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { CarouselModule } from 'primeng/carousel';
 
 @Component({
   selector: 'app-list-problem',
-  imports: [CommonModule ,TableModule, ToastModule],
+  imports: [CommonModule ,TableModule, ToastModule, CardModule, ButtonModule, CarouselModule],
   providers: [MessageService, ProblemReportService],
   templateUrl: './list-problem.component.html',
   styleUrl: './list-problem.component.css'
