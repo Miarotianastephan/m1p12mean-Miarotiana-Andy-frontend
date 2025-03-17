@@ -35,6 +35,7 @@ export class SidebarComponent implements OnInit {
           { label: 'Accueil', icon: 'pi pi-home', route: '/' },
           { label: 'Rendez-vous', icon: 'pi pi-calendar', route: '/mecanicien/rdv' },
           { label: 'Mécanicien', icon: 'pi pi-users', route: '/mecanicien/meca' },
+          { label: 'Demande de devis', icon: 'pi pi-users', route: '/mecanicien/problem' },
         ]
       }
     ];
