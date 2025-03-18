@@ -11,18 +11,24 @@ import { ButtonModule } from 'primeng/button';
 import { Ripple } from 'primeng/ripple';
 import { SidebarService } from '../../services/sidebar.service';
 
-
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, Menubar, BadgeModule, AvatarModule, InputTextModule, Ripple, ButtonModule],
+  imports: [
+    CommonModule,
+    Menubar,
+    BadgeModule,
+    AvatarModule,
+    InputTextModule,
+    ButtonModule,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
   standalone: true,
 })
 export class HeaderComponent {
-  title = "Appli Angular"
+  title = 'Appli Angular';
 
-  constructor(private sidebarService: SidebarService){}
+  constructor(private sidebarService: SidebarService) {}
 
   toggleSidebar() {
     this.sidebarService.toggle();
