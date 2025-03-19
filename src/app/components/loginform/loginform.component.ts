@@ -6,7 +6,6 @@ import { ButtonModule } from 'primeng/button';
 import { QueryService } from '../../api/query/query.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService } from '../../api/query/global.service';
 @Component({
   selector: 'app-loginform',
   imports: [

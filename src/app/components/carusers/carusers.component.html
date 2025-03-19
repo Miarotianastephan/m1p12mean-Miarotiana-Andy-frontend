@@ -1,0 +1,148 @@
+<div class="space-y-2">
+  <div class="flex justify-end">
+    <button pButton icon="pi pi-plus" (click)="showDialog()">
+      <span pButtonLabel class="text-xs">Nouveaux</span>
+    </button>
+  </div>
+  <div class="grid grid-cols-3 gap-5 p-5 rounded-lg border border-gray-200">
+    <ng-container *ngFor="let voiture of voitures">
+      <app-cardcar [car]="voiture"></app-cardcar>
+    </ng-container>
+  </div>
+</div>
+<p-dialog
+  header="voiture"
+  [modal]="true"
+  [(visible)]="visible"
+  class="text-xs"
+  [style]="{ width: '30rem' }"
+>
+  <span class="p-text-secondary block mb-5"
+    >Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro dolor
+    consequuntur eligendi mollitia soluta quam harum minus quas laborum ut
+    magnam quisquam, iure voluptatem, eum sint et voluptatibus accusantium
+    officia!</span
+  >
+  <form action="">
+    <div class="grid grid-cols-3 gap-2">
+      <div class="flex flex-col gap-2 mb-2">
+        <label for="username" class="font-semibold w-24">Marque</label>
+        <p-select
+          [options]="marque"
+          [(ngModel)]="selectedbrand"
+          optionLabel="brand"
+          placeholder="Select a brand"
+          class="w-full"
+          name="marque"
+          (onChange)="showSelectedBrand()"
+        />
+      </div>
+      <div class="flex flex-col gap-2 mb-2">
+        <label for="email" class="font-semibold w-24">Model</label>
+        <p-select
+          [options]="models"
+          [(ngModel)]="selectedModel"
+          optionLabel="modelName"
+          placeholder="Select a Model"
+          class="w-full"
+          name="model"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2 mb-2">
+        <label for="email" class="font-semibold w-24">Type</label>
+        <p-select
+          [options]="Type"
+          [(ngModel)]="selectType"
+          optionLabel="name"
+          placeholder="Select a type"
+          class="w-full"
+          name="model"
+        />
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="flex flex-col gap-2 mb-2">
+        <label for="plaque_id" class="font-semibold w-24">Plaque *</label>
+        <input
+          pInputText
+          id="plaque_id"
+          class="flex-auto"
+          autocomplete="off"
+          name="plaque"
+          placeholder="..."
+        />
+      </div>
+      <div class="flex flex-col gap-2 mb-2">
+        <label for="chasis_id" class="font-semibold w-24">N-Chasis *</label>
+        <input
+          pInputText
+          id="chasis_id"
+          class="flex-auto"
+          autocomplete="off"
+          placeholder="..."
+          name="n_chasis"
+        />
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="flex flex-col gap-2 mb-2">
+        <label for="kilometrage_id" class="font-semibold w-24"
+          >Kilometrage</label
+        >
+        <input
+          pInputText
+          id="kilometrage_id"
+          class="flex-auto"
+          autocomplete="off"
+          name="kilometrage"
+          placeholder="..."
+          type="number"
+          min="1"
+        />
+      </div>
+      <div class="flex flex-col gap-2 mb-2">
+        <label for="anee_id" class="font-semibold w-24">Annee</label>
+        <input
+          pInputText
+          id="anee_id"
+          class="flex-auto"
+          autocomplete="off"
+          name="anee"
+          type="number"
+          placeholder="..."
+          min="1"
+        />
+      </div>
+    </div>
+    <div class="card text-xs">
+      <p-fileupload
+        name="demo[]"
+        url="https://www.primefaces.org/cdn/api/upload.php"
+        (onUpload)="onUpload($event)"
+        [multiple]="true"
+        accept="image/*"
+        maxFileSize="1000000"
+        mode="advanced"
+        class="text-xs"
+      >
+        <ng-template #empty>
+          <div>Drag and drop files to here to upload.</div>
+        </ng-template>
+        <ng-template #content>
+          <ul *ngIf="uploadedFiles.length">
+            <li *ngFor="let file of uploadedFiles">
+              {{ file.name }} - {{ file.size }} bytes
+            </li>
+          </ul>
+        </ng-template>
+      </p-fileupload>
+    </div>
+    <div class="flex justify-end mt-5 gap-2">
+      <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+      <button type="submit" pButton>
+        <span pButtonLabel>Save</span>
+      </button>
+    </div>
+  </form>
+</p-dialog>

@@ -8,13 +8,18 @@ import { MessageService } from 'primeng/api';
   imports: [ToastModule, ButtonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class HomeComponent {
-  title_home = "Page Accueil"
+  title_home = 'Page Accueil';
   constructor(private messageService: MessageService) {}
 
   show() {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3000 });
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Info',
+      detail: 'Message Content',
+      life: 3000,
+    });
   }
 }
