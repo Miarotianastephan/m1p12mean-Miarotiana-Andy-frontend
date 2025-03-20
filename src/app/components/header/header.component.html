@@ -1,16 +1,37 @@
 <div class="card w-full p-2">
-  <p-menubar>
+  <p-menubar [model]="items">
     <ng-template #start>
-      <p-button
+      <svg width="31" height="33" viewBox="0 0 31 33" fill="none">
+        <path
+          d="M15.1934 0V0V0L0.0391235 5.38288L2.35052 25.3417L15.1934 32.427V32.427V32.427L28.0364 25.3417L30.3478 5.38288L15.1934 0Z"
+          fill="var(--p-primary-color)"
+        ></path>
+      </svg>
+      <!-- <p-button
         (click)="toggleSidebar()"
         icon="pi pi-bars"
         class="sidebar-toggle"
-      ></p-button>
-      <p></p>
+      ></p-button> -->
+    </ng-template>
+    <ng-template #item let-item let-root="root">
+      <a
+        pRipple
+        [routerLink]="item.route"
+        routerLinkActive="router-link-active"
+        class="text-sm p-menubar-item-link"
+      >
+        <div class="flex gap-2 items-center">
+          <i [ngClass]="item.icon" class="text-xs"></i>
+          <span>{{ item.label }}</span>
+        </div>
+      </a>
     </ng-template>
     <ng-template #end>
       <div class="flex items-center gap-2">
-        <input type="text" pInputText placeholder="Search" class="w-36" />
+        <p-avatar
+          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+          shape="circle"
+        />
       </div>
     </ng-template>
   </p-menubar>

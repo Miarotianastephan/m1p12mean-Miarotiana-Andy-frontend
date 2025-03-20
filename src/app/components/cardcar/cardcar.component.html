@@ -39,4 +39,13 @@
       </div>
     </div>
   </div>
+  <ng-template #footer>
+    <div class="flex justify-end">
+      <a [routerLink]="'/content/myrepair'">
+        <button pButton icon="pi pi-wrench" size="small">
+          <span pButtonLabel class="text-xs">Check</span>
+        </button>
+      </a>
+    </div>
+  </ng-template>
 </p-card>
