@@ -7,11 +7,6 @@
           fill="var(--p-primary-color)"
         ></path>
       </svg>
-      <!-- <p-button
-        (click)="toggleSidebar()"
-        icon="pi pi-bars"
-        class="sidebar-toggle"
-      ></p-button> -->
     </ng-template>
     <ng-template #item let-item let-root="root">
       <a
@@ -29,10 +24,27 @@
     <ng-template #end>
       <div class="flex items-center gap-2">
         <p-avatar
+          (click)="op.toggle($event)"
           image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
           shape="circle"
+          class="cursor-pointer"
         />
       </div>
     </ng-template>
   </p-menubar>
 </div>
+<p-popover #op>
+  <div class="flex items-center gap-2">
+    <p-avatar
+      (click)="op.toggle($event)"
+      image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+      shape="circle"
+    />
+    <span class="text-sm">Andy Rakotonavalona</span>
+  </div>
+  <p-divider></p-divider>
+  <button pButton outlined="variant" class="w-full" (click)="logOut()">
+    <i class="pi pi-sign-out text-red-500"></i>
+    <span pButtonLabel class="text-xs text-red-500">Deconnexion</span>
+  </button>
+</p-popover>

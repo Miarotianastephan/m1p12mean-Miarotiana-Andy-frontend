@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { CarusersComponent } from './components/carusers/carusers.component';
 import { RepairComponent } from './components/repair/repair.component';
 import { QuoteComponent } from './components/quote/quote.component';
+import { TaskmecanoComponent } from './components/taskmecano/taskmecano.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
       { path: 'mycars', component: CarusersComponent },
       { path: 'myrepair', component: RepairComponent },
       { path: 'mydevis', component: QuoteComponent },
+      { path: 'task', component: TaskmecanoComponent },
     ],
   },
 ];

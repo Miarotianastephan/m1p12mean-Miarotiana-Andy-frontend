@@ -1,0 +1,56 @@
+<div class="flex gap-2 border border-gray p-2 rounded-lg">
+  <button pButton outlined="variant">
+    <span class="text-xs">All</span>
+  </button>
+  <button pButton outlined="variant">
+    <span class="text-xs">In-Progress</span>
+  </button>
+  <button pButton outlined="variant">
+    <span class="text-xs">Completed</span>
+  </button>
+</div>
+<div class="p-2 border-gray gap-2 rouded-lg grid grid-cols-4">
+  <div class="col-span-1 flex flex-col space-y-2">
+    <p-card class="text-xs">
+      <ng-template #title>
+        <p-tag severity="danger"
+          ><span class="text-xs">In Progress</span></p-tag
+        >
+      </ng-template>
+      <p class="mt-2">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed
+        consequuntur error repudiandae numquam deserunt quisquam repellat libero
+        asperiores earum nam nobis, culpa ratione quam perferendis esse,
+        cupiditate neque quas!
+      </p>
+      <p-divider></p-divider>
+      <ng-template #footer>
+        <div class="flex justify-between gap-4">
+          <div>
+            <p-avatar
+              image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+              size="normal"
+              shape="circle"
+            />
+            <p-avatar
+              image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
+              size="normal"
+              shape="circle"
+            />
+            <p-avatar
+              image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png"
+              size="normal"
+              shape="circle"
+            />
+          </div>
+          <button pButton>
+            <span class="text-xs" pButtonLabel>Check</span>
+          </button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+  <div class="col-span-3">
+    <app-workmecano />
+  </div>
+</div>

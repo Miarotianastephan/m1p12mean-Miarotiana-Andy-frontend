@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import instanceAxios from '../axios-config';
 import {
   injectMutation,
-  injectQuery,
   QueryClient,
 } from '@tanstack/angular-query-experimental';
 
