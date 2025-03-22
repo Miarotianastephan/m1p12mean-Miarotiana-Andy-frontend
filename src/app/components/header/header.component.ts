@@ -33,6 +33,11 @@ export class HeaderComponent implements OnInit {
       { label: 'Accueil', icon: 'pi pi-palette', route: '/content' },
       { label: 'External', icon: 'pi pi-home', route: '/content/todos' },
       { label: 'Voitures', icon: 'pi pi-car', route: '/content/mycars' },
+      {
+        label: 'Request',
+        icon: 'pi pi-question-circle',
+        route: '/content/mydevis',
+      },
     ];
   }
 }

@@ -1,0 +1,140 @@
+<div class="header border border-gray rounded-lg p-2 flex justify-end gap-4">
+  <p-datepicker
+    [(ngModel)]="selectedDateTime"
+    [showTime]="true"
+    [hourFormat]="'24'"
+    [disabledDates]="disabledDays"
+  />
+  <p-floatlabel class="w-full md:w-40" variant="on">
+    <p-select
+      [(ngModel)]="selectedCity"
+      [options]="cities"
+      optionLabel="version"
+      class="text-xs"
+      size="large"
+      inputId="on_label"
+      styleClass="w-full"
+    />
+    <label for="on_label">Version</label>
+  </p-floatlabel>
+  <button pButton [outlined]="true">
+    <i class="pi pi-check-circle" pButtonIcon></i>
+    <span class="text-xs" pButtonLabel> Accepter </span>
+  </button>
+  <button pButton [outlined]="true" (click)="visible = true">
+    <i class="pi pi-comment" pButtonIcon></i>
+    <span class="text-xs" pButtonLabel> Commentaire </span>
+  </button>
+  <button pButton>
+    <i class="pi pi-file-export" pButtonIcon></i>
+    <span class="text-xs" pButtonLabel> exporter </span>
+  </button>
+</div>
+<div class="p-5 border border-gray rounded-lg min-h-[600px] mt-1">
+  <div class="flex justify-between text-gray-400 items-center">
+    <div class="flex flex-col text-xs space-y-1">
+      <span>client</span>
+      <span class="text-sm font-bold text-black">Andy Rakotonavalona</span>
+      <span>LAMBORGHINI Urus 2024</span>
+    </div>
+    <div class="flex flex-col text-xs space-y-1 text-right">
+      <span>Balance Duo</span>
+      <span class="text-3xl text-black font-bold">1.000.000 Ar</span>
+      <span>Date : 20/06/2020</span>
+    </div>
+  </div>
+  <p-divider align="left" type="solid">
+    <span class="text-xs">travaux a faire</span>
+  </p-divider>
+  <p-table [value]="todo">
+    <ng-template #header>
+      <tr class="text-sm">
+        <th>Reparation</th>
+        <th>Description</th>
+        <th>Quantite</th>
+        <th>Cost</th>
+        <th>Total Cost</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-rowData>
+      <tr class="text-sm">
+        <td>{{ rowData.name }}</td>
+        <td>{{ rowData.description }}</td>
+        <td>{{ rowData.quantity }}</td>
+        <td>{{ rowData.cost }}</td>
+        <td>200 Ar</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-divider align="left" type="solid">
+    <span class="text-xs">Piece necessaire</span>
+  </p-divider>
+  <p-table [value]="todo">
+    <ng-template #header>
+      <tr class="text-sm">
+        <th>Reparation</th>
+        <th>Description</th>
+        <th>Quantite</th>
+        <th>Cost</th>
+        <th>Total cost</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-rowData>
+      <tr class="text-sm">
+        <td>{{ rowData.name }}</td>
+        <td>{{ rowData.description }}</td>
+        <td>{{ rowData.quantity }}</td>
+        <td>{{ rowData.cost }}</td>
+        <td>200 Ar</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-drawer
+  header="Commentaire"
+  [(visible)]="visible"
+  styleClass="!w-full md:!w-80 lg:!w-[30rem]"
+  position="right"
+>
+  <form action="">
+    <p-floatlabel variant="in">
+      <textarea
+        pTextarea
+        id="over_label"
+        [(ngModel)]="commentaire"
+        rows="5"
+        cols="30"
+        style="resize: none"
+        class="h-full w-full"
+        placeholder="...."
+        name="commentaire"
+      >
+      </textarea>
+      <label for="in_label">commentaire</label>
+    </p-floatlabel>
+    <div class="flex justify-end">
+      <button pButton iconPos="right" disabled>
+        <i class="pi pi-send" pButtonIcon></i>
+        <span pButtonLabel class="text-xs">Envoyer</span>
+      </button>
+    </div>
+  </form>
+  <div class="mt-4">
+    <p-panel>
+      <ng-template #header>
+        <div class="flex items-center gap-2">
+          <p-avatar
+            image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+            shape="circle"
+          />
+          <span class="font-bold text-sm">Amy Elsner</span>
+        </div>
+      </ng-template>
+      <p class="text-xs">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim dicta,
+        recusandae, odio autem fugit aperiam omnis amet perspiciatis quia optio
+        voluptatibus maiores nisi debitis esse, ducimus eius velit nulla in?
+      </p>
+    </p-panel>
+  </div>
+</p-drawer>

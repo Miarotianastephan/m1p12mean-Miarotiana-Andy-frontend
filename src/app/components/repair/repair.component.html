@@ -5,19 +5,16 @@
         <div class="text-sm flex flex-col">
           <div class="flex gap-2 items-center">
             <i class="pi pi-money-bill"></i>
-            <span>Cout total du reparation</span>
+            <span class="text-sm text-black">Cout total du reparation</span>
           </div>
-          <span class="text-xs"
-            >Lorem, ipsum dolor sit amet consectetur adipisicing e</span
-          >
         </div>
       </ng-template>
       <ng-template #footer>
         <div class="flex justify-between mt-5 items-center">
-          <span class="text-3xl font-bold">1.000.000 Ar</span>
+          <span class="text-3xl font-bold text-black">1.000.000 Ar</span>
           <p-button class="text-xs" variant="outlined">
             <i class="pi pi-money-bill"></i>
-            <span class="text-xs">devis</span>
+            <span class="text-xs">payer</span>
           </p-button>
         </div>
       </ng-template>
@@ -25,15 +22,15 @@
     <p-card>
       <ng-template #title>
         <div class="flex gap-2 items-center">
-          <i class="pi pi-clock"></i>
-          <span class="text-sm">Progression de travaille</span>
+          <i class="pi pi-clock text-black"></i>
+          <span class="text-sm text-black">Progression de travaille</span>
         </div>
       </ng-template>
       <p-progressbar [value]="50" [style]="{ height: '15px' }" />
       <ng-template #footer>
         <div class="flex flex-col mt-5">
           <span class="text-xs">Temps passer</span>
-          <span class="text-2xl text-red-600">1J2h15min</span>
+          <span class="text-2xl text-black">1J2h15min</span>
         </div>
       </ng-template>
     </p-card>
@@ -43,11 +40,11 @@
       <p-table [columns]="cols" [value]="repairHistory">
         <ng-template #caption>
           <div class="flex items-center justify-between">
-            <span class="text-xl font-bold">Repair History</span>
+            <span class="text-xl font-bold text-black">Repair History</span>
           </div>
         </ng-template>
         <ng-template #header let-columns>
-          <tr>
+          <tr class="text-sm">
             <th *ngFor="let col of columns">
               {{ col.header }}
             </th>
@@ -86,7 +83,7 @@
       <p-table [value]="work">
         <ng-template #caption>
           <div class="flex items-center justify-between">
-            <span class="font-bold">Travaille a faire</span>
+            <span class="font-bold text-black">Travaille a faire</span>
           </div>
         </ng-template>
         <ng-template #header let-columns>
@@ -121,17 +118,17 @@
       <p-table [value]="mecano">
         <ng-template #caption>
           <div class="flex items-center justify-between">
-            <span class="font-bold">Mecaniciens</span>
+            <span class="font-bold text-black">Mecaniciens</span>
           </div>
         </ng-template>
         <ng-template #header>
-          <tr>
+          <tr class="text-sm">
             <th>Mecanicien</th>
             <th>Contact</th>
           </tr>
         </ng-template>
         <ng-template #body let-rowData>
-          <tr>
+          <tr class="text-sm">
             <td>
               <div class="flex items-center gap-2">
                 <img

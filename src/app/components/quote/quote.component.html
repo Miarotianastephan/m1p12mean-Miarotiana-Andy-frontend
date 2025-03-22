@@ -1,0 +1,134 @@
+<div class="grid grid-cols-3 gap-2">
+  <div class="flex flex-col col-span-1 space-y-1">
+    <div
+      class="p-2 flex justify-between items-center rounded-lg border border-gray"
+    >
+      <span class="text-xs font-bold">Liste des devis</span>
+      <button pButton (click)="showDialog()">
+        <i class="pi pi-plus-circle" pButtonIcon></i>
+        <span pButtonLabel class="text-xs">new</span>
+      </button>
+    </div>
+    <div class="flex flex-col space-y-1">
+      <p-panel [toggleable]="true">
+        <ng-template #header>
+          <div class="flex items-center gap-2">
+            <p-avatar
+              image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+              shape="circle"
+            />
+            <span class="font-bold text-sm">Amy Elsner</span>
+          </div>
+        </ng-template>
+        <ng-template #footer>
+          <div class="flex flex-wrap items-center gap-4 justify-end">
+            <span class="text-surface-500 dark:text-surface-400 text-xs"
+              >20/02/2024</span
+            >
+            <button pButton outlined="variant">
+              <i class="pi pi-money-bill" pButtonIcon></i>
+              <span pButtonLabel class="text-xs">devis</span>
+            </button>
+          </div>
+        </ng-template>
+        <p class="m-0 text-xs">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </p-panel>
+      <p-panel [toggleable]="true">
+        <ng-template #header>
+          <div class="flex items-center gap-2">
+            <p-avatar
+              image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+              shape="circle"
+            />
+            <span class="font-bold text-sm">Amy Elsner</span>
+          </div>
+        </ng-template>
+        <ng-template #footer>
+          <div class="flex flex-wrap items-center gap-4 justify-end">
+            <span class="text-surface-500 dark:text-surface-400 text-xs"
+              >20/02/2024</span
+            >
+            <button pButton outlined="variant">
+              <i class="pi pi-money-bill" pButtonIcon></i>
+              <span pButtonLabel class="text-xs">devis</span>
+            </button>
+          </div>
+        </ng-template>
+        <p class="m-0 text-xs">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </p-panel>
+    </div>
+  </div>
+  <div class="col-span-2">
+    <app-invoice />
+  </div>
+</div>
+<p-dialog
+  header="Devis"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '30rem' }"
+>
+  <span class="p-text-secondary text-xs block mb-8"
+    >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium quasi
+    perspiciatis quaerat consequatur perferendis reprehenderit maiores, enim
+    praesentium blanditiis, dolorum porro? Corrupti sapiente distinctio
+    consequuntur vitae autem mollitia corporis. Perferendis?</span
+  >
+  <div class="flex flex-col gap-1 mb-4">
+    <p-floatlabel class="w-full" variant="on">
+      <p-select
+        [(ngModel)]="selectedvoiture"
+        [options]="voiture"
+        optionLabel="voiture"
+        size="large"
+        inputId="on_label"
+        styleClass="w-full"
+      />
+      <label for="on_label">Version</label>
+    </p-floatlabel>
+  </div>
+  <div class="flex flex-col gap-1 mb-8">
+    <p-floatlabel variant="on">
+      <textarea
+        pTextarea
+        id="over_label"
+        [(ngModel)]="devis"
+        rows="5"
+        cols="30"
+        style="resize: none"
+        class="h-full w-full"
+      ></textarea>
+      <label for="on_label">Devis</label>
+    </p-floatlabel>
+  </div>
+  <div class="flex justify-end gap-2">
+    <button
+      pButton
+      class="text-xs"
+      severity="secondary"
+      (click)="visible = false"
+    >
+      <span pButtonLabel class="text-xs">cancel</span>
+    </button>
+    <button pButton>
+      <i class="pi pi-question-circle"></i>
+      <span pButtonLabel class="text-xs">demander</span>
+    </button>
+  </div>
+</p-dialog>

@@ -85,14 +85,14 @@ export class RepairComponent implements OnInit {
       {
         cost: 1500000,
         startDate: new Date('2024-03-20'),
-        endDate: new Date('2024-03-25'),
+        endDate: null,
         status: 'in-progress',
         progres: 60,
       },
       {
         cost: 1500000,
         startDate: new Date('2024-03-28'),
-        endDate: new Date('2024-04-02'),
+        endDate: null,
         status: 'in-progress',
         progres: 30,
       },
