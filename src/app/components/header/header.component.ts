@@ -55,7 +55,11 @@ export class HeaderComponent implements OnInit {
       ];
     } else if (user.role === 'mecanicien') {
       this.items = [
-        { label: 'Tableau de bord', icon: 'pi pi-chart-bar' },
+        {
+          label: 'Tableau de bord',
+          icon: 'pi pi-chart-bar',
+          route: 'boardmecano',
+        },
         { label: 'Tache', icon: 'pi pi-book', route: 'task' },
       ];
     } else {

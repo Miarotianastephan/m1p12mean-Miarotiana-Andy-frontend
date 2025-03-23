@@ -21,7 +21,6 @@ export class AuthService {
         },
       });
       const user = response.data.user;
-      // console.log(user);
       this.userservice.setUser(user);
       return user;
     } catch (error) {
@@ -34,5 +33,8 @@ export class AuthService {
     queryFn: this.UserConnectedByToken.bind(this),
     staleTime: Infinity,
     gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   }));
 }

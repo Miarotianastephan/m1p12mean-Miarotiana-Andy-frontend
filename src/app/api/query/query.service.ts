@@ -1,16 +1,10 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import instanceAxios from '../axios-config';
-import {
-  injectMutation,
-  QueryClient,
-} from '@tanstack/angular-query-experimental';
-
+import { injectMutation } from '@tanstack/angular-query-experimental';
 @Injectable({
   providedIn: 'root',
 })
 export class QueryService {
-  queryClient = inject(QueryClient);
-
   async Authentification(body: any) {
     try {
       const response = await instanceAxios.post('/auth/login', body);

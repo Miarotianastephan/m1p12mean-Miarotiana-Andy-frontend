@@ -7,6 +7,7 @@ import { CarusersComponent } from './components/carusers/carusers.component';
 import { RepairComponent } from './components/repair/repair.component';
 import { QuoteComponent } from './components/quote/quote.component';
 import { TaskmecanoComponent } from './components/taskmecano/taskmecano.component';
+import { BoardmecanoComponent } from './components/boardmecano/boardmecano.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -20,6 +21,7 @@ export const routes: Routes = [
       { path: 'myrepair', component: RepairComponent },
       { path: 'mydevis', component: QuoteComponent },
       { path: 'task', component: TaskmecanoComponent },
+      { path: 'boardmecano', component: BoardmecanoComponent },
     ],
   },
 ];

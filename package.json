@@ -21,6 +21,7 @@
     "@tanstack/angular-query-experimental": "^5.68.0",
     "appli-angular-vite": "file:",
     "axios": "^1.8.3",
+    "chart.js": "^4.4.8",
     "primeicons": "^7.0.0",
     "primeng": "^19.0.9",
     "rxjs": "~7.8.0",

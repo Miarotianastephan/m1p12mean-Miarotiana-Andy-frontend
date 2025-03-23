@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
@@ -43,6 +43,7 @@ interface version {
   standalone: true,
 })
 export class InvoiceComponent implements OnInit {
+  @Input() id_problem: string | undefined;
   todo!: repair[];
   cities: version[] | undefined;
   selectedCity: version | undefined;
@@ -50,9 +51,9 @@ export class InvoiceComponent implements OnInit {
   commentaire: string = '';
   selectedDateTime!: Date;
   existingAppointments: Date[] = [
-    new Date(2024, 2, 20, 10, 0), // 20 Mars 2024 à 10h00
-    new Date(2024, 2, 20, 14, 0), // 20 Mars 2024 à 14h00
-    new Date(2024, 2, 21, 9, 0), // 21 Mars 2024 à 09h00
+    new Date(2024, 2, 20, 10, 0),
+    new Date(2024, 2, 20, 14, 0),
+    new Date(2024, 2, 21, 9, 0),
   ];
   disabledDays: Date[] = [];
   ngOnInit(): void {
