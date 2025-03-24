@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { CarouselModule } from 'primeng/carousel';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-problem',
@@ -18,10 +19,9 @@ import { CarouselModule } from 'primeng/carousel';
 })
 export class ListProblemComponent implements OnInit{
   problemReports!: ProblemReport[];
-
   selectedProblem!: ProblemReport;
 
-  constructor(private problemReportService: ProblemReportService, private messageService: MessageService) {}
+  constructor(private router: Router, private problemReportService: ProblemReportService, private messageService: MessageService) {}
 
   ngOnInit() {
     this.problemReportService.getProblemReports().subscribe({
@@ -39,5 +39,11 @@ export class ListProblemComponent implements OnInit{
 
   onRowUnselect(event: any) {
       this.messageService.add({ severity: 'info', summary: 'Focus annulee', detail: event.data.description });
+  }
+
+  redirectToCreateDevis() {  
+    this.router.navigate(['/mecanicien/creer-devis'], {
+    state: { problem: this.selectedProblem },
+  });
   }
 }
