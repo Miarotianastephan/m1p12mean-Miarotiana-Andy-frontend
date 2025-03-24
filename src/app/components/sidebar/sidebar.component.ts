@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { Ripple } from 'primeng/ripple';
@@ -8,26 +7,37 @@ import { AvatarModule } from 'primeng/avatar';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { Menu } from 'primeng/menu';
-import { SidebarService } from '../../services/sidebar.service'
-
+import { SidebarService } from '../../services/sidebar.service';
+import { AuthService } from '../../api/query/global.service';
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterModule, CommonModule, DrawerModule, ButtonModule, Ripple, AvatarModule, Menu],
+  imports: [
+    RouterModule,
+    CommonModule,
+    DrawerModule,
+    ButtonModule,
+    Ripple,
+    AvatarModule,
+    Menu,
+  ],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.css',
+  standalone: true,
 })
 export class SidebarComponent implements OnInit {
   items: MenuItem[] | undefined;
   visible: boolean = false; // Plus besoin de `@ViewChild`
-  
-  constructor(private router: Router, private sidebarService: SidebarService) {}
+  fullname: string | undefined = '';
+  userConnected: any = null;
+  constructor(
+    private sidebarService: SidebarService,
+    private authservice: AuthService
+  ) {}
 
   ngOnInit() {
-    
-    this.sidebarService.visible$.subscribe(value => {
+    this.sidebarService.visible$.subscribe((value) => {
       this.visible = value;
     });
-
     this.items = [
       {
         label: 'Navigation',
@@ -36,11 +46,23 @@ export class SidebarComponent implements OnInit {
           { label: 'Rendez-vous', icon: 'pi pi-calendar', route: '/mecanicien/rdv' },
           { label: 'Mécanicien', icon: 'pi pi-users', route: '/mecanicien/meca' },
           { label: 'Demande de devis', icon: 'pi pi-users', route: '/mecanicien/problem' },
+          { label: 'Contenu', icon: 'pi pi-palette', route: '/content' },
+          { label: 'External', icon: 'pi pi-home', route: '/content/todos' },
+          { label: 'Voitures', icon: 'pi pi-car', route: '/content/mycars' },
         ]
       }
     ];
   }
 
+  initUserConnected() {
+    return this.authservice.usegetUserConnectedByToken.data();
+  }
+  IsLoading() {
+    return this.authservice.usegetUserConnectedByToken.isPending();
+  }
+  IsError() {
+    return this.authservice.usegetUserConnectedByToken.error();
+  }
   closeSidebar() {
     this.sidebarService.toggle();
   }

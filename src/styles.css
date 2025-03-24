@@ -5,13 +5,12 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('assets/Poppins/Poppins-Regular.ttf');
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  /* Application de la police */
-  body {
-    font-family: 'Poppins', sans-serif;
-  }
+  font-family: "Poppins";
+  src: url("assets/Poppins/Poppins-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+/* Application de la police */
+body {
+  font-family: "Poppins", sans-serif;
+}

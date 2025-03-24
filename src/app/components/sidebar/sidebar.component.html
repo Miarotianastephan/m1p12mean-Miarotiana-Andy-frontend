@@ -4,19 +4,25 @@
       <!-- Header du sidebar -->
       <div class="sidebar-header">
         <div class="sidebar-logo">
-          <svg width="31" height="33" viewBox="0 0 31 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="..." />
+          <svg width="31" height="33" viewBox="0 0 31 33" fill="none">
+            <path
+              d="M15.1934 0V0V0L0.0391235 5.38288L2.35052 25.3417L15.1934 32.427V32.427V32.427L28.0364 25.3417L30.3478 5.38288L15.1934 0Z"
+              fill="var(--p-primary-color)"
+            ></path>
           </svg>
           <span class="sidebar-title">E-Station</span>
         </div>
-        <p-button type="button" (click)="closeSidebar()" icon="pi pi-times" class="close-btn"></p-button>
       </div>
-
       <!-- Contenu du menu -->
       <div class="sidebar-menu">
         <p-menu [model]="items">
           <ng-template #item let-item>
-            <a *ngIf="item.route" [routerLink]="item.route" class="menu-item" (click)="closeSidebar()">
+            <a
+              *ngIf="item.route"
+              [routerLink]="item.route"
+              class="menu-item text-sm"
+              (click)="closeSidebar()"
+            >
               <span [class]="item.icon"></span>
               <span>{{ item.label }}</span>
             </a>
@@ -26,11 +32,20 @@
 
       <!-- Footer du sidebar -->
       <div class="sidebar-footer">
-        <hr />
-        <a pRipple class="user-profile">
-          <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
-          <span class="user-name">User Name</span>
-        </a>
+        <div *ngIf="IsLoading()">Chargement...</div>
+        <div *ngIf="IsError()">Error...</div>
+        <div *ngIf="!IsLoading() && !IsError()">
+          <a pRipple class="user-profile">
+            <p-avatar
+              image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+              shape="circle"
+            />
+            <div class="flex flex-col text-xs">
+              <span class="user-name">{{ initUserConnected().email }}</span>
+              <span>Client</span>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </ng-template>

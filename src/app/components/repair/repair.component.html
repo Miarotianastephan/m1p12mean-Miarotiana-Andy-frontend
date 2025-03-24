@@ -1,0 +1,177 @@
+<div class="grid grid-cols-3 gap-2">
+  <div class="flex flex-col space-y-3">
+    <p-card class="shadow-none">
+      <ng-template #title>
+        <div class="text-sm flex flex-col">
+          <div class="flex gap-2 items-center">
+            <i class="pi pi-money-bill"></i>
+            <span class="text-sm text-black"
+              >Cout total du reparation effectuer pour cette voiture</span
+            >
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #footer>
+        <div class="flex justify-between mt-5 items-center">
+          <span class="text-4xl font-bold text-black">1.000.000 Ar</span>
+          <p-button class="text-xs" variant="outlined">
+            <i class="pi pi-money-bill"></i>
+            <span class="text-xs">payer</span>
+          </p-button>
+        </div>
+      </ng-template>
+    </p-card>
+    <p-card>
+      <ng-template #title>
+        <div class="flex gap-2 items-center">
+          <i class="pi pi-money-bill text-black"></i>
+          <span class="text-sm text-black">Progression de travaille</span>
+        </div>
+      </ng-template>
+      <ng-template #footer>
+        <div class="flex justify-between">
+          <div class="flex flex-col mt-5">
+            <span class="text-xs">Cout du reparation</span>
+            <span class="text-2xl text-black">200.000 Ar</span>
+          </div>
+          <div class="flex flex-col mt-5">
+            <span class="text-xs">Pourcentage par rapport cout total</span>
+            <span class="text-2xl text-black">80%</span>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
+    <p-card>
+      <ng-template #title>
+        <div class="flex gap-2 items-center">
+          <i class="pi pi-clock text-black"></i>
+          <span class="text-sm text-black">Progression de travaille</span>
+        </div>
+      </ng-template>
+      <p-progressbar [value]="50" [style]="{ height: '15px' }" />
+      <ng-template #footer>
+        <div class="flex justify-between">
+          <div class="flex flex-col mt-5">
+            <span class="text-xs">Temps passer</span>
+            <span class="text-2xl text-black">1J2h15min</span>
+          </div>
+          <div class="flex flex-col mt-5">
+            <span class="text-xs">Temps passer estimer</span>
+            <span class="text-2xl text-black">1J2h15min</span>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+  <div class="col-span-2">
+    <p-card>
+      <p-table [columns]="cols" [value]="repairHistory">
+        <ng-template #caption>
+          <div class="flex items-center justify-between">
+            <span class="text-xl font-bold text-black">Repair History</span>
+          </div>
+        </ng-template>
+        <ng-template #header let-columns>
+          <tr class="text-sm">
+            <th *ngFor="let col of columns">
+              {{ col.header }}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-rowData let-columns="columns">
+          <tr class="text-sm">
+            <td>{{ rowData.cost.toLocaleString() }} Ar</td>
+            <td>{{ rowData.startDate | date : "dd/MM/yyyy" }}</td>
+            <td>{{ rowData.endDate | date : "dd/MM/yyyy" }}</td>
+            <td>
+              <p-tag [severity]="getColorTag(rowData.status)">
+                <span class="text-xs">{{ rowData.status }}</span>
+              </p-tag>
+            </td>
+            <td>
+              <p-progressbar
+                [value]="rowData.progres"
+                [style]="{ height: '15px' }"
+              />
+            </td>
+            <td>
+              <p-button variant="outlined">
+                <span class="text-xs">change</span>
+              </p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>
+<div class="grid grid-cols-3 mt-4 gap-2">
+  <div class="card col-span-2">
+    <p-card>
+      <p-table [value]="work">
+        <ng-template #caption>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-black">Travaille a faire</span>
+          </div>
+        </ng-template>
+        <ng-template #header let-columns>
+          <tr class="text-sm">
+            <th>Nom</th>
+            <th>Quantite</th>
+            <th>Min</th>
+            <th>Date Debut</th>
+            <th>Date Fin</th>
+            <th>Status</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-rowData let-columns="columns">
+          <tr class="text-sm">
+            <td>{{ rowData.name }}</td>
+            <td>{{ rowData.quantity }}</td>
+            <td>{{ rowData.estimatedMin }} min</td>
+            <td>{{ rowData.startDate | date : "dd/MM/yyyy" }}</td>
+            <td>{{ rowData.endDate | date : "dd/MM/yyyy" }}</td>
+            <td>
+              <p-tag [severity]="getColorTag(rowData.status)">
+                <span class="text-xs">{{ rowData.status }}</span>
+              </p-tag>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+  <div>
+    <p-card>
+      <p-table [value]="mecano">
+        <ng-template #caption>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-black">Mecaniciens</span>
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr class="text-sm">
+            <th>Mecanicien</th>
+            <th>Contact</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-rowData>
+          <tr class="text-sm">
+            <td>
+              <div class="flex items-center gap-2">
+                <img
+                  alt="..."
+                  src="https://primefaces.org/cdn/primeng/images/demo/avatar/ionibowcher.png"
+                  width="32"
+                  style="vertical-align: middle"
+                />
+                <span>{{ rowData.name }}</span>
+              </div>
+            </td>
+            <td>{{ rowData.contact }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>
