@@ -7,6 +7,16 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { FileUpload } from 'primeng/fileupload';
+import instanceAxios from '../../api/axios-config';
+import { Router } from '@angular/router';
+import {
+  injectMutation,
+  injectQuery,
+  QueryClient,
+} from '@tanstack/angular-query-experimental';
+import { Voiture } from '../../interface/Voiture';
+import { HttpClient } from '@angular/common/http';
+import { ProgressBarModule } from 'primeng/progressbar';
 interface model {
   modelName: string;
   year: number;
@@ -28,6 +38,7 @@ interface voiture {
     SelectModule,
     FormsModule,
     FileUpload,
+    ProgressBarModule,
   ],
   templateUrl: './carusers.component.html',
   styleUrl: './carusers.component.css',
@@ -42,8 +53,17 @@ export class CarusersComponent implements OnInit {
   Type: any[] = [];
   voitures: any[] = [];
   marque: any[] = [];
-
-  constructor() {}
+  mileage: number = 1;
+  year: number = 2000;
+  plaque: string = '';
+  chasis: string = '';
+  imagevoiture: string = '';
+  uploading: boolean = false;
+  constructor(
+    private queryClient: QueryClient,
+    private router: Router,
+    private http: HttpClient
+  ) {}
   showDialog() {
     this.visible = true;
   }
@@ -139,4 +159,97 @@ export class CarusersComponent implements OnInit {
       },
     ];
   }
+  async CreateCar(body: any) {
+    try {
+      const reponse = await instanceAxios.post('/client/add_cars', body, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      return reponse.data;
+    } catch (error) {
+      this.router.navigate(['/']);
+    }
+  }
+  useCreateCar = injectMutation(() => ({
+    mutationFn: (body: any) => this.CreateCar(body),
+    onError() {},
+    onSuccess() {},
+  }));
+
+  uploadToImageBB(event: any) {
+    const file = event.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    this.uploading = true;
+    this.http
+      .post(
+        `https://api.imgbb.com/1/upload?key=ca2d96c9ae967bb975557194bd8ec9e3`,
+        formData
+      )
+      .subscribe(
+        (response: any) => {
+          console.log('✅ Upload réussi !', response);
+          console.log('📷 URL de l’image :', response.data.url);
+          this.uploading = false;
+          this.imagevoiture = response.data.url;
+        },
+        (error) => {
+          console.error('❌ Erreur lors de l’upload', error);
+          this.uploading = false;
+        }
+      );
+  }
+  async onAddCar() {
+    console.log('------------------------');
+    console.log(this.selectedbrand);
+    console.log(this.selectedModel);
+    console.log(this.Type);
+    console.log(this.chasis);
+    console.log(this.plaque);
+    console.log(this.mileage);
+    console.log(this.year);
+    console.log(this.uploadedFiles);
+    console.log('------------------------');
+    const body = {
+      brandId: this.selectedbrand?.brand,
+      brand: this.selectedbrand,
+      modelId: this.selectedModel,
+      model: this.selectedModel,
+      year: this.year,
+      registrationNumber: this.plaque,
+      chassisNumber: this.chasis,
+      imagefile: this.uploadedFiles,
+    };
+    const reponse = await this.useCreateCar.mutateAsync({ body });
+    console.log(reponse);
+  }
+  onFetchedCar(): Voiture[] {
+    const reponse = this.usegetCarsUser.data().data;
+    return reponse;
+  }
+  onLoadingCar() {
+    return this.usegetCarsUser.isPending();
+  }
+  onErrorCar() {
+    return this.usegetCarsUser.isError();
+  }
+  async getCarsUser() {
+    try {
+      const response = await instanceAxios.get('/client/get_cars', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      this.router.navigate(['/']);
+    }
+  }
+  usegetCarsUser = injectQuery(() => ({
+    queryKey: ['carsUser', localStorage.getItem('token')],
+    queryFn: this.getCarsUser,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  }));
 }

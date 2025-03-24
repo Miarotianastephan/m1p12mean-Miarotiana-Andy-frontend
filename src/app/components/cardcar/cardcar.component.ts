@@ -4,6 +4,7 @@ import { DividerModule } from 'primeng/divider';
 import { GalleriaModule } from 'primeng/galleria';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
+import { Voiture } from '../../interface/Voiture';
 @Component({
   selector: 'app-cardcar',
   imports: [
@@ -17,12 +18,5 @@ import { RouterModule } from '@angular/router';
   styleUrl: './cardcar.component.css',
 })
 export class CardcarComponent {
-  @Input() car!: {
-    marque: string;
-    model: string;
-    kilometrage: number;
-    annee: number;
-    type: string;
-    imageVoiture: string[];
-  };
+  @Input() car!: Voiture;
 }

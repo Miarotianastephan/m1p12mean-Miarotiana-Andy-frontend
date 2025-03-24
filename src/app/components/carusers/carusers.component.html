@@ -5,9 +5,15 @@
       <span pButtonLabel class="text-xs">Nouveaux</span>
     </button>
   </div>
-  <div class="grid grid-cols-3 gap-5 p-5 rounded-lg border border-gray-200">
-    <ng-container *ngFor="let voiture of voitures">
-      <app-cardcar [car]="voiture"></app-cardcar>
+  <div *ngIf="onLoadingCar()">
+    <span>Chargement...</span>
+  </div>
+  <div *ngIf="onErrorCar()">
+    <span>Error </span>
+  </div>
+  <div *ngIf="!onLoadingCar() && !onErrorCar()" class="grid grid-cols-2 gap-5">
+    <ng-container *ngFor="let voiture of onFetchedCar()">
+      <app-cardcar [car]="voiture" />
     </ng-container>
   </div>
 </div>
@@ -24,7 +30,7 @@
     magnam quisquam, iure voluptatem, eum sint et voluptatibus accusantium
     officia!</span
   >
-  <form action="">
+  <form (ngSubmit)="onAddCar()">
     <div class="grid grid-cols-3 gap-2">
       <div class="flex flex-col gap-2 mb-2">
         <label for="username" class="font-semibold w-24">Marque</label>
@@ -72,6 +78,7 @@
           autocomplete="off"
           name="plaque"
           placeholder="..."
+          [(ngModel)]="chasis"
         />
       </div>
       <div class="flex flex-col gap-2 mb-2">
@@ -83,6 +90,7 @@
           autocomplete="off"
           placeholder="..."
           name="n_chasis"
+          [(ngModel)]="plaque"
         />
       </div>
     </div>
@@ -100,6 +108,7 @@
           placeholder="..."
           type="number"
           min="1"
+          [(ngModel)]="mileage"
         />
       </div>
       <div class="flex flex-col gap-2 mb-2">
@@ -113,32 +122,35 @@
           type="number"
           placeholder="..."
           min="1"
+          [(ngModel)]="year"
         />
       </div>
     </div>
-    <div class="card text-xs">
+    <div class="card text-xs flex">
       <p-fileupload
-        name="demo[]"
-        url="https://www.primefaces.org/cdn/api/upload.php"
-        (onUpload)="onUpload($event)"
-        [multiple]="true"
+        #fu
+        chooseLabel="Choose"
+        chooseIcon="pi pi-upload"
+        mode="basic"
+        name="image"
+        customUpload="true"
+        (uploadHandler)="uploadToImageBB($event)"
         accept="image/*"
         maxFileSize="1000000"
-        mode="advanced"
         class="text-xs"
-      >
-        <ng-template #empty>
-          <div>Drag and drop files to here to upload.</div>
-        </ng-template>
-        <ng-template #content>
-          <ul *ngIf="uploadedFiles.length">
-            <li *ngFor="let file of uploadedFiles">
-              {{ file.name }} - {{ file.size }} bytes
-            </li>
-          </ul>
-        </ng-template>
-      </p-fileupload>
+      />
+      <p-button
+        class="text-xs"
+        label="Upload"
+        (onClick)="fu.upload()"
+        severity="secondary"
+      />
     </div>
+    <p-progressbar
+      mode="indeterminate"
+      *ngIf="uploading"
+      [style]="{ height: '6px' }"
+    />
     <div class="flex justify-end mt-5 gap-2">
       <p-button label="Cancel" severity="secondary" (click)="visible = false" />
       <button type="submit" pButton>

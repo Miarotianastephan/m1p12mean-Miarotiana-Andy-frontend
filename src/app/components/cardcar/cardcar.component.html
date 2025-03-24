@@ -1,51 +1,68 @@
-<p-card>
-  <ng-template #header>
-    <p-galleria
-      [value]="car.imageVoiture"
-      [showIndicators]="true"
-      [showThumbnails]="false"
-      [changeItemOnIndicatorHover]="true"
-      class="border-none rounded-none"
-    >
-      <ng-template #item let-item>
-        <img [src]="item" style="width: 100%; display: block" />
-      </ng-template>
-    </p-galleria>
-  </ng-template>
-  <div class="grid grid-cols-5 text-xs">
-    <div class="col-span-2 flex items-center">
-      <div class="flex flex-col items-center">
-        <span class="text-sm font-bold">{{ car.marque }}</span>
-        <span>{{ car.model }}</span>
-      </div>
-      <p-divider layout="vertical" />
+<div class="flex items-center gap-5 border p-5 rounded-lg">
+  <p-galleria
+    [value]="car.imageVoiture"
+    [showIndicators]="true"
+    [showThumbnails]="false"
+    [changeItemOnIndicatorHover]="true"
+    class="border-none rounded-none"
+    style="width: 30rem"
+  >
+    <ng-template #item let-item>
+      <img [src]="item" style="width: 100%; display: block" />
+    </ng-template>
+  </p-galleria>
+  <div class="flex w-full flex-col space-y-4">
+    <div class="flex flex-col">
+      <span class="font-bold text-gray-500"
+        >{{ car.brand }} - {{ car.model }}</span
+      >
     </div>
-    <div class="col-span-3">
-      <div class="flex items-center">
-        <div class="flex flex-col items-center">
-          <span>Kilometrage</span>
-          <span>{{ car.kilometrage }}</span>
-        </div>
-        <p-divider layout="vertical" />
-        <div class="flex flex-col items-center">
-          <span>Annee</span>
-          <span>{{ car.annee }}</span>
-        </div>
-        <p-divider layout="vertical" />
-        <div class="flex flex-col items-center">
-          <span>Type</span>
-          <span>{{ car.annee }}</span>
-        </div>
+    <div class="flex space-x-10">
+      <div class="flex flex-col">
+        <span class="text-xl font-bold">{{ car.registrationNumber }}</span>
+        <span class="text-xs">Plaque</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xl font-bold">{{ car.chassisNumber }}</span>
+        <span class="text-xs">N-Chasis</span>
+      </div>
+    </div>
+    <div class="flex justify-between items-center mt-5">
+      <div class="flex flex-col">
+        <p-button
+          icon="pi pi-bolt"
+          outlined="variant"
+          size="small"
+          class="mb-2"
+        />
+        <span class="text-xl font-bold">{{ car.mileage }}</span>
+        <span class="text-xs">Kilometrage</span>
+      </div>
+      <div class="flex flex-col">
+        <p-button
+          icon="pi pi-calendar"
+          outlined="variant"
+          size="small"
+          class="mb-2"
+        />
+        <span class="text-xl font-bold">{{ car.year }}</span>
+        <span class="text-xs">Annee</span>
+      </div>
+      <div class="flex flex-col">
+        <p-button
+          icon="pi pi-wrench"
+          outlined="variant"
+          size="small"
+          class="mb-2"
+        />
+        <span class="text-xl font-bold">Manuel</span>
+        <span class="text-xs">Type</span>
+      </div>
+      <div>
+        <a [routerLink]="'/content/myrepair'">
+          <p-button icon="pi pi-arrow-right" [iconPos]="'right'" size="small" />
+        </a>
       </div>
     </div>
   </div>
-  <ng-template #footer>
-    <div class="flex justify-end">
-      <a [routerLink]="'/content/myrepair'">
-        <button pButton icon="pi pi-wrench" size="small">
-          <span pButtonLabel class="text-xs">Check</span>
-        </button>
-      </a>
-    </div>
-  </ng-template>
-</p-card>
+</div>

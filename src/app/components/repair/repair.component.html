@@ -5,17 +5,39 @@
         <div class="text-sm flex flex-col">
           <div class="flex gap-2 items-center">
             <i class="pi pi-money-bill"></i>
-            <span class="text-sm text-black">Cout total du reparation</span>
+            <span class="text-sm text-black"
+              >Cout total du reparation effectuer pour cette voiture</span
+            >
           </div>
         </div>
       </ng-template>
       <ng-template #footer>
         <div class="flex justify-between mt-5 items-center">
-          <span class="text-3xl font-bold text-black">1.000.000 Ar</span>
+          <span class="text-4xl font-bold text-black">1.000.000 Ar</span>
           <p-button class="text-xs" variant="outlined">
             <i class="pi pi-money-bill"></i>
             <span class="text-xs">payer</span>
           </p-button>
+        </div>
+      </ng-template>
+    </p-card>
+    <p-card>
+      <ng-template #title>
+        <div class="flex gap-2 items-center">
+          <i class="pi pi-money-bill text-black"></i>
+          <span class="text-sm text-black">Progression de travaille</span>
+        </div>
+      </ng-template>
+      <ng-template #footer>
+        <div class="flex justify-between">
+          <div class="flex flex-col mt-5">
+            <span class="text-xs">Cout du reparation</span>
+            <span class="text-2xl text-black">200.000 Ar</span>
+          </div>
+          <div class="flex flex-col mt-5">
+            <span class="text-xs">Pourcentage par rapport cout total</span>
+            <span class="text-2xl text-black">80%</span>
+          </div>
         </div>
       </ng-template>
     </p-card>
@@ -28,9 +50,15 @@
       </ng-template>
       <p-progressbar [value]="50" [style]="{ height: '15px' }" />
       <ng-template #footer>
-        <div class="flex flex-col mt-5">
-          <span class="text-xs">Temps passer</span>
-          <span class="text-2xl text-black">1J2h15min</span>
+        <div class="flex justify-between">
+          <div class="flex flex-col mt-5">
+            <span class="text-xs">Temps passer</span>
+            <span class="text-2xl text-black">1J2h15min</span>
+          </div>
+          <div class="flex flex-col mt-5">
+            <span class="text-xs">Temps passer estimer</span>
+            <span class="text-2xl text-black">1J2h15min</span>
+          </div>
         </div>
       </ng-template>
     </p-card>
