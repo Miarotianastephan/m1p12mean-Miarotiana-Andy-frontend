@@ -17,7 +17,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'todos', component: TodosComponent },
-      { path: 'mecanicien', loadChildren: () => import('./pages/manager/manager.routes') },
+      { path: 'manager', loadChildren: () => import('./pages/manager/manager.routes') },
       { path: 'mycars', component: CarusersComponent },
       { path: 'myrepair', component: RepairComponent },
       { path: 'mydevis', component: QuoteComponent },

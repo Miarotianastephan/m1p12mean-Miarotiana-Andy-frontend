@@ -44,7 +44,7 @@ export class QuoteComponent implements OnInit {
   visible: boolean = false;
   devis: string = '';
   selectedvoiture: any | undefined;
-  id_problem: string | undefined;
+  problem: Problem | undefined;
   constructor(private queryClient: QueryClient, private router: Router) {}
   ngOnInit(): void {}
   showDialog() {
@@ -64,7 +64,7 @@ export class QuoteComponent implements OnInit {
     }));
   }
   ongetDevis(problem: Problem) {
-    this.id_problem = problem._id;
+    this.problem = problem;
   }
   onLoadingCar() {
     return this.usegetCarsUser.isPending();

@@ -61,7 +61,7 @@
     </div>
   </div>
   <div class="col-span-2">
-    <app-invoice [id_problem]="id_problem" />
+    <app-invoice *ngIf="problem !== undefined" [problem]="problem" />
   </div>
 </div>
 <p-dialog

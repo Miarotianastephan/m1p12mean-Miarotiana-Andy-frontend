@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
@@ -11,13 +11,14 @@ import { TextareaModule } from 'primeng/textarea';
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
 import { DatePickerModule } from 'primeng/datepicker';
-interface repair {
-  name: string;
-  description: string;
-  cost: number;
-  quantity?: number; // optionnel
-  isQuantityRequired: boolean; // Indique si la quantité est requise pour cette réparation
-}
+import { Repair } from '../../interface/Repair';
+import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
+import instanceAxios from '../../api/axios-config';
+import { Quote } from '../../interface/Devis';
+import { Problem } from '../../interface/Problem';
+import { Router } from '@angular/router';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TagModule } from 'primeng/tag';
 interface version {
   version: string;
   code: string;
@@ -25,6 +26,8 @@ interface version {
 @Component({
   selector: 'app-invoice',
   imports: [
+    TagModule,
+    SkeletonModule,
     TableModule,
     DividerModule,
     ButtonModule,
@@ -42,61 +45,62 @@ interface version {
   styleUrl: './invoice.component.css',
   standalone: true,
 })
-export class InvoiceComponent implements OnInit {
-  @Input() id_problem: string | undefined;
-  todo!: repair[];
-  cities: version[] | undefined;
-  selectedCity: version | undefined;
+export class InvoiceComponent implements OnChanges {
+  constructor(private queryClient: QueryClient, private router: Router) {}
+  @Input() problem!: Problem;
+  todo!: Repair[];
+  selectedDevis: Quote | undefined;
   visible: boolean = false;
+  visible_modal: boolean = false;
   commentaire: string = '';
-  selectedDateTime!: Date;
-  existingAppointments: Date[] = [
-    new Date(2024, 2, 20, 10, 0),
-    new Date(2024, 2, 20, 14, 0),
-    new Date(2024, 2, 21, 9, 0),
-  ];
-  disabledDays: Date[] = [];
-  ngOnInit(): void {
-    this.cities = [
-      { version: 'V1', code: 'NY' },
-      { version: 'V2', code: 'RM' },
-    ];
-    this.todo = [
-      {
-        name: 'Vidange',
-        description: 'Vidange moteur',
-        quantity: 1,
-        cost: 50,
-        isQuantityRequired: false,
-      },
-      {
-        name: 'Remplacement de pneus',
-        description: 'Remplacement de 4 pneus',
-        quantity: 4,
-        cost: 200,
-        isQuantityRequired: true,
-      },
-      {
-        name: 'Plaquettes de frein',
-        description: 'Remplacement des plaquettes de frein',
-        quantity: 4,
-        cost: 150,
-        isQuantityRequired: true,
-      },
-    ];
-    // Ajouter les jours où toutes les heures sont prises
-    const takenDays = this.existingAppointments.map((app) =>
-      app.toDateString()
-    );
-    this.disabledDays = [...new Set(takenDays)].map((day) => new Date(day));
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['problem'] && this.problem) {
+      this.selectedDevis = undefined;
+      this.usegetDevisByProblem.refetch();
+    }
   }
-  getDisabledTimes(): number[] {
-    // Retourne les heures désactivées pour le jour sélectionné
-    if (!this.selectedDateTime) return [];
-    return this.existingAppointments
-      .filter(
-        (app) => app.toDateString() === this.selectedDateTime.toDateString()
-      )
-      .map((app) => app.getHours());
+  showDialog() {
+    this.visible_modal = true;
   }
+  onErrorgetDevisByProblem() {
+    const error = this.usegetDevisByProblem.isError();
+    return error;
+  }
+  onLoadinggetDevisByProblem() {
+    return this.usegetDevisByProblem.isPending();
+  }
+  onUsegetDevisByProblem(): Quote[] {
+    const data = this.usegetDevisByProblem.data().devis;
+    return data;
+  }
+  async getDevisByProblem() {
+    try {
+      const response = await instanceAxios.get('/client/get_devisbyproblem', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        params: { problem_id: this.problem._id },
+      });
+      console.log('reponse', response.data, this.problem._id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      this.router.navigate(['/']);
+    }
+  }
+
+  usegetDevisByProblem = injectQuery(() => {
+    console.log(this.problem._id);
+    return {
+      queryKey: [
+        'devisbyproblem',
+        this.problem._id,
+        localStorage.getItem('token'),
+      ],
+      queryFn: this.getDevisByProblem.bind(this),
+      staleTime: Infinity,
+      gcTime: Infinity,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    };
+  });
 }

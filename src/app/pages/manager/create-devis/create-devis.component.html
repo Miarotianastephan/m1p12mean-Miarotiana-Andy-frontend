@@ -1,216 +1,281 @@
 <div class="max-w-full">
-    <div class="card">
-        <p-tabs value="0">
-            <p-tablist>
-                <p-tab value="0">Choix des pieces</p-tab>
-                <p-tab value="1">Choix des reparations</p-tab>
-                <p-tab value="2">Validation du devis</p-tab>
-            </p-tablist>
-            <p-tabpanels>
-                <p-tabpanel value="0">
-                    <div class="max-w-full p-0 mb-4">
-                      <p-card>
-                        <ng-template #subtitle>Listes des pieces a choisir</ng-template>
-                      </p-card>
-                    </div>
-                    <div class="flex flex-col md:flex-row gap-4 p-0">
-                      <div class="card w-full md:w-2/3">
-                        <p-card>
-                          <p-table
-                            class="shadow-lg overflow-x-auto"
-                            [value]="dataParts"
-                            [paginator]="true"
-                            [rows]="5"
-                            selectionMode="multiple"
-                            [(selection)]="cartParts"
-                            dataKey="_id"
-                          >
-                            <ng-template #header>
-                              <tr>
-                                <th>Nom piece</th>
-                                <th>Marque</th>
-                                <th>Model</th>
-                                <th>Prix unitaire</th>
-                                <th>En stock</th>
-                              </tr>
-                            </ng-template>
-                  
-                            <ng-template #body let-piece>
-                              <tr [pSelectableRow]="piece">
-                                <td>{{ piece.partName }}</td>
-                                <td>{{ piece.brand }}</td>
-                                <td>{{ piece.model }}</td>
-                                <td>{{ piece.price | currency:'Ar ':'symbol':'1.2-2' }}</td>
-                                <td>--</td>
-                              </tr>
-                            </ng-template>
-                          </p-table>
-                        </p-card>
-                      </div>
-                  
-                      <div class="w-full md:w-1/3 mb-4 h-96 overflow-y-auto">
-                        <p-card *ngIf="cartParts; else emptyCard">
-                          <ng-template #title> {{ cartParts.length }} pièces sélectionnées </ng-template>
-                          <ng-template #subtitle>
-                            Du : {{ selectedProblem.datereportProblem | date : "dd/MM/yyyy HH:mm" }}
-                          </ng-template>
-                        
-                          <!-- Liste des pièces avec quantité -->
-                          <div *ngFor="let part of cartParts" class="mb-3 mt-3">
-                            <div class="flex gap-4 justify-between items-center border-b py-1">
-                              <div>
-                                <p class="font-bold">{{ part.partName }}</p>
-                                <p class="text-sm">{{ part.description }}</p>
-                                <p>P.U : {{ part.price | currency:'Ar ' }}</p>
-                              </div>
-                              <div class="card flex flex-col items-end justify-center">
-                                Qtt(s)
-                                <p-inputNumber
-                                  [(ngModel)]="part.quantity"
-                                  [showButtons]="false"
-                                  inputId="minimalist"
-                                  [inputStyle]="{ width: '3rem', textAlign: 'center', borderRadius: '0.5rem' }"
-                                  [min]="1"
-                                  (ngModelChange)="refreshPartsPrice()"
-                                ></p-inputNumber>
-                              </div>
-                            </div>
-                          </div>
-                        </p-card>
-                      
-                        <ng-template #emptyCard>
-                          <p-card class="w-full md:w-96">
-                            <ng-template #title> Aucune pièce choisie </ng-template>
-                            <p>Les pièces que vous choisissez sont listées ici.</p>
-                          </p-card>
-                        </ng-template>
-                      </div>
-                    </div>
-                </p-tabpanel>
-                <p-tabpanel value="1">
-                    <div class="max-w-full p-0 mb-4">
-                      <p-card>
-                        <ng-template #subtitle>Listes des reparations a choisir</ng-template>
-                      </p-card>
-                    </div>
-                    <div class="flex flex-col md:flex-row gap-4 p-0">
-                      <div class="card w-full md:w-2/3">
-                        <p-card>
-                          <p-table
-                            class="shadow-lg overflow-x-auto"
-                            [value]="subCategories"
-                            [paginator]="true"
-                            [rows]="5"
-                            selectionMode="multiple"
-                            [(selection)]="cartSubCategories"
-                            dataKey="_id"
-                          >
-                            <ng-template #header>
-                              <tr>
-                                <th>Nom service</th>
-                                <th>Category</th>
-                                <th>Temps estimatif</th>
-                                <th>Prix service</th>
-                              </tr>
-                            </ng-template>
-                  
-                            <ng-template #body let-services>
-                              <tr [pSelectableRow]="services">
-                                <td>{{ services.name }}</td>
-                                <td>{{ services.categoryname }}</td>
-                                <td>{{ services.estimatedtime }}</td>
-                                <td>{{ services.estimatedprice | currency:'Ar ':'symbol':'1.2-2' }}</td>
-                              </tr>
-                            </ng-template>
-                          </p-table>
-                        </p-card>
-                      </div>
-                  
-                      <div class="w-full md:w-1/3 mb-4 h-96 overflow-y-auto">
-                        <p-card *ngIf="cartSubCategories; else emptyCardCategory">
-                          <ng-template #title> {{ cartSubCategories.length }} reparations sélectionnées </ng-template>
-                          <ng-template #subtitle>
-                            Du : {{ selectedProblem.datereportProblem | date : "dd/MM/yyyy HH:mm" }}
-                          </ng-template>
-                        
-                          <!-- Liste des pièces avec quantité -->
-                          <div *ngFor="let services of cartSubCategories" class="mb-3 mt-3">
-                            <div class="flex gap-4 justify-between items-center border-b py-1">
-                              <div>
-                                <p class="font-bold">{{ services.name }}</p>
-                                <p class="text-sm">{{ services.categoryname }}</p>
-                                <p>P.U : {{ services.estimatedprice | currency:'Ar ' }}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </p-card>
-                      
-                        <ng-template #emptyCardCategory>
-                          <p-card class="w-full md:w-96">
-                            <ng-template #title> Aucune reparations choisie </ng-template>
-                            <p>Les reparations que vous choisissez sont listées ici.</p>
-                          </p-card>
-                        </ng-template>
-                      </div>
-                    </div>
-                </p-tabpanel>
+  <div class="card">
+    <p-tabs value="0">
+      <p-tablist>
+        <p-tab value="0">Choix des pieces</p-tab>
+        <p-tab value="1">Choix des reparations</p-tab>
+        <p-tab value="2">Validation du devis</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel value="0">
+          <div class="max-w-full p-0 mb-4">
+            <p-card>
+              <ng-template #subtitle>Listes des pieces a choisir</ng-template>
+            </p-card>
+          </div>
+          <div class="flex flex-col md:flex-row gap-4 p-0">
+            <div class="card w-full md:w-2/3">
+              <p-card>
+                <p-table
+                  class="shadow-lg overflow-x-auto"
+                  [value]="dataParts"
+                  [paginator]="true"
+                  [rows]="5"
+                  selectionMode="multiple"
+                  [(selection)]="cartParts"
+                  dataKey="_id"
+                >
+                  <ng-template #header>
+                    <tr>
+                      <th>Nom piece</th>
+                      <th>Marque</th>
+                      <th>Model</th>
+                      <th>Prix unitaire</th>
+                      <th>En stock</th>
+                    </tr>
+                  </ng-template>
 
-                <p-tabpanel value="2">
-                  <div class="max-w-full p-0 mb-4">
-                    <p-card>
-                      <ng-template #subtitle>Recapitulatif des choix pour le devis</ng-template>
-                    </p-card>
-                  </div>
+                  <ng-template #body let-piece>
+                    <tr [pSelectableRow]="piece">
+                      <td>{{ piece.partName }}</td>
+                      <td>{{ piece.brand }}</td>
+                      <td>{{ piece.model }}</td>
+                      <td>
+                        {{
+                          piece.price | currency : "Ar " : "symbol" : "1.2-2"
+                        }}
+                      </td>
+                      <td>--</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </p-card>
+            </div>
 
-                  <div class="w-full flex flex-col md:flex-row gap-4 mb-4">
-                    <div class="w-full flex flex-col gap-2 w-1/2 h-96 bg-gray-100 rounded-lg p-4 overflow-y-auto">
-                      <div class="text-lg bg-gray-300 w-max p-3">Cout des pièces : {{ cardPartsPrice | currency:'Ar ' }}</div>
-                      <div class="">
-                        <div *ngFor="let part of cartParts" class="mb-3 mt-3">
-                          <div class="flex gap-4 justify-between items-center border-b py-1">
-                            <div>
-                              <p class="font-bold">{{ part.partName }}</p>
-                              <p class="text-sm">{{ part.description }}</p>
-                              <p>P.U : {{ part.price | currency:'Ar ' }}</p>
-                            </div>
-                            <div class="card flex flex-col items-end justify-center">
-                              Qtt(s)
-                              <p-inputNumber
-                                [(ngModel)]="part.quantity"
-                                [showButtons]="false"
-                                inputId="minimalist"
-                                [inputStyle]="{ width: '3rem', textAlign: 'center', borderRadius: '0.5rem' }"
-                                [min]="1"
-                                (ngModelChange)="refreshPartsPrice()"
-                              ></p-inputNumber>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+            <div class="w-full md:w-1/3 mb-4 h-96 overflow-y-auto">
+              <p-card *ngIf="cartParts; else emptyCard">
+                <ng-template #title>
+                  {{ cartParts.length }} pièces sélectionnées
+                </ng-template>
+                <ng-template #subtitle>
+                  Du :
+                  {{
+                    selectedProblem.datereportProblem
+                      | date : "dd/MM/yyyy HH:mm"
+                  }}
+                </ng-template>
+
+                <!-- Liste des pièces avec quantité -->
+                <div *ngFor="let part of cartParts" class="mb-3 mt-3">
+                  <div
+                    class="flex gap-4 justify-between items-center border-b py-1"
+                  >
+                    <div>
+                      <p class="font-bold">{{ part.partName }}</p>
+                      <p class="text-sm">{{ part.description }}</p>
+                      <p>P.U : {{ part.price | currency : "Ar " }}</p>
                     </div>
-                    <div class="w-full flex flex-col gap-2 w-1/2 h-96 bg-gray-100 rounded-lg p-4 overflow-y-auto">
-                      <div class="text-lg bg-gray-300 w-max p-3">Les réparations à faires : {{ cardSubCategoriesPrice | currency:'Ar ' }}</div>
-                      <div class="">
-                        <!-- Liste des pièces avec quantité -->
-                        <div *ngFor="let services of cartSubCategories" class="mb-3 mt-3">
-                          <div class="flex gap-4 justify-between items-center border-b py-1">
-                            <div>
-                              <p class="font-bold">{{ services.name }}</p>
-                              <p class="text-sm">{{ services.categoryname }}</p>
-                              <p>P.U : {{ services.estimatedprice | currency:'Ar ' }}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="card flex flex-col items-end justify-center">
+                      Qtt(s)
+                      <p-inputNumber
+                        [(ngModel)]="part.quantity"
+                        [showButtons]="false"
+                        inputId="minimalist"
+                        [inputStyle]="{
+                          width: '3rem',
+                          textAlign: 'center',
+                          borderRadius: '0.5rem'
+                        }"
+                        [min]="1"
+                        (ngModelChange)="refreshPartsPrice()"
+                      ></p-inputNumber>
                     </div>
                   </div>
-                  
-                  <div class="">
-                    <p-button label="Valider le devis" icon="pi pi-check" [loading]="loading" (onClick)="submitQuote()" severity="success"/>
-                  </div>
-                </p-tabpanel>
+                </div>
+              </p-card>
 
-            </p-tabpanels>
-        </p-tabs>
-    </div>    
+              <ng-template #emptyCard>
+                <p-card class="w-full md:w-96">
+                  <ng-template #title> Aucune pièce choisie </ng-template>
+                  <p>Les pièces que vous choisissez sont listées ici.</p>
+                </p-card>
+              </ng-template>
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="1">
+          <div class="max-w-full p-0 mb-4">
+            <p-card>
+              <ng-template #subtitle
+                >Listes des reparations a choisir</ng-template
+              >
+            </p-card>
+          </div>
+          <div class="flex flex-col md:flex-row gap-4 p-0">
+            <div class="card w-full md:w-2/3">
+              <p-card>
+                <p-table
+                  class="shadow-lg overflow-x-auto"
+                  [value]="subCategories"
+                  [paginator]="true"
+                  [rows]="5"
+                  selectionMode="multiple"
+                  [(selection)]="cartSubCategories"
+                  dataKey="_id"
+                >
+                  <ng-template #header>
+                    <tr>
+                      <th>Nom service</th>
+                      <th>Category</th>
+                      <th>Temps estimatif</th>
+                      <th>Prix service</th>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template #body let-services>
+                    <tr [pSelectableRow]="services">
+                      <td>{{ services.name }}</td>
+                      <td>{{ services.categoryname }}</td>
+                      <td>{{ services.estimatedtime }}</td>
+                      <td>
+                        {{
+                          services.estimatedprice
+                            | currency : "Ar " : "symbol" : "1.2-2"
+                        }}
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </p-card>
+            </div>
+
+            <div class="w-full md:w-1/3 mb-4 h-96 overflow-y-auto">
+              <p-card *ngIf="cartSubCategories; else emptyCardCategory">
+                <ng-template #title>
+                  {{ cartSubCategories.length }} reparations sélectionnées
+                </ng-template>
+                <ng-template #subtitle>
+                  Du :
+                  {{
+                    selectedProblem.datereportProblem
+                      | date : "dd/MM/yyyy HH:mm"
+                  }}
+                </ng-template>
+
+                <!-- Liste des pièces avec quantité -->
+                <div
+                  *ngFor="let services of cartSubCategories"
+                  class="mb-3 mt-3"
+                >
+                  <div
+                    class="flex gap-4 justify-between items-center border-b py-1"
+                  >
+                    <div>
+                      <p class="font-bold">{{ services.name }}</p>
+                      <p class="text-sm">{{ services.categoryname }}</p>
+                      <p>
+                        P.U : {{ services.estimatedprice | currency : "Ar " }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </p-card>
+
+              <ng-template #emptyCardCategory>
+                <p-card class="w-full md:w-96">
+                  <ng-template #title> Aucune reparations choisie </ng-template>
+                  <p>Les reparations que vous choisissez sont listées ici.</p>
+                </p-card>
+              </ng-template>
+            </div>
+          </div>
+        </p-tabpanel>
+
+        <p-tabpanel value="2">
+          <div class="max-w-full p-0 mb-4">
+            <p-card>
+              <ng-template #subtitle
+                >Recapitulatif des choix pour le devis</ng-template
+              >
+            </p-card>
+          </div>
+
+          <div class="w-full flex flex-col md:flex-row gap-4 mb-4">
+            <div
+              class="w-full flex flex-col gap-2 w-1/2 h-96 bg-gray-100 rounded-lg p-4 overflow-y-auto"
+            >
+              <div class="text-lg bg-gray-300 w-max p-3">
+                Cout des pièces : {{ cardPartsPrice | currency : "Ar " }}
+              </div>
+              <div class="">
+                <div *ngFor="let part of cartParts" class="mb-3 mt-3">
+                  <div
+                    class="flex gap-4 justify-between items-center border-b py-1"
+                  >
+                    <div>
+                      <p class="font-bold">{{ part.partName }}</p>
+                      <p class="text-sm">{{ part.description }}</p>
+                      <p>P.U : {{ part.price | currency : "Ar " }}</p>
+                    </div>
+                    <div class="card flex flex-col items-end justify-center">
+                      Qtt(s)
+                      <p-inputNumber
+                        [(ngModel)]="part.quantity"
+                        [showButtons]="false"
+                        inputId="minimalist"
+                        [inputStyle]="{
+                          width: '3rem',
+                          textAlign: 'center',
+                          borderRadius: '0.5rem'
+                        }"
+                        [min]="1"
+                        (ngModelChange)="refreshPartsPrice()"
+                      ></p-inputNumber>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="w-full flex flex-col gap-2 w-1/2 h-96 bg-gray-100 rounded-lg p-4 overflow-y-auto"
+            >
+              <div class="text-lg bg-gray-300 w-max p-3">
+                Les réparations à faires :
+                {{ cardSubCategoriesPrice | currency : "Ar " }}
+              </div>
+              <div class="">
+                <!-- Liste des pièces avec quantité -->
+                <div
+                  *ngFor="let services of cartSubCategories"
+                  class="mb-3 mt-3"
+                >
+                  <div
+                    class="flex gap-4 justify-between items-center border-b py-1"
+                  >
+                    <div>
+                      <p class="font-bold">{{ services.name }}</p>
+                      <p class="text-sm">{{ services.categoryname }}</p>
+                      <p>
+                        P.U : {{ services.estimatedprice | currency : "Ar " }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="">
+            <p-button
+              label="Valider le devis"
+              icon="pi pi-check"
+              [loading]="loading"
+              (onClick)="submitQuote()"
+              severity="success"
+            />
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </div>
 </div>

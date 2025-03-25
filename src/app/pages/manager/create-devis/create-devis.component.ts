@@ -16,17 +16,25 @@ import { QuoteService } from '../../../services/problem/quote.service';
 
 @Component({
   selector: 'app-create-devis',
-  imports: [CommonModule, TabsModule, CardModule, TableModule, FormsModule, InputNumber, ButtonModule],
+  imports: [
+    CommonModule,
+    TabsModule,
+    CardModule,
+    TableModule,
+    FormsModule,
+    InputNumber,
+    ButtonModule,
+  ],
   providers: [PartsService, SubcategoryserviceService],
   templateUrl: './create-devis.component.html',
-  styleUrl: './create-devis.component.css'
+  styleUrl: './create-devis.component.css',
 })
-export class CreateDevisComponent implements OnInit{
+export class CreateDevisComponent implements OnInit {
   loading: boolean = false;
   quoteType: string = 'Estimatif'; // ou 'Physique'
   selectedProblem!: ProblemReport;
 
-  // Pour lister les pieces 
+  // Pour lister les pieces
   dataParts!: Part[];
   private _cartParts!: Part[]; // pieces choisis
   cardPartsPrice: number = 0;
@@ -38,11 +46,11 @@ export class CreateDevisComponent implements OnInit{
     this._cartParts = parts;
     this.refreshPartsPrice();
   }
-  
+
   // Pour lister les category
-  subCategories!: SubCategory[]
-  private _cartSubCategories!: SubCategory[] // category choisis
-  cardSubCategoriesPrice: number = 0
+  subCategories!: SubCategory[];
+  private _cartSubCategories!: SubCategory[]; // category choisis
+  cardSubCategoriesPrice: number = 0;
 
   get cartSubCategories(): SubCategory[] {
     return this._cartSubCategories;
@@ -52,44 +60,45 @@ export class CreateDevisComponent implements OnInit{
     this.refreshServicesPrice();
   }
 
-  refreshPartsPrice(){
+  refreshPartsPrice() {
     this.cardPartsPrice = this.quoteService.getPriceParts(this.cartParts);
   }
-  refreshServicesPrice(){
-    this.cardSubCategoriesPrice = this.quoteService.getPriceReparation(this.cartSubCategories);
+  refreshServicesPrice() {
+    this.cardSubCategoriesPrice = this.quoteService.getPriceReparation(
+      this.cartSubCategories
+    );
   }
-  
-  
+
   constructor(
     private router: Router,
     private partService: PartsService,
     private subcategoryService: SubcategoryserviceService,
     private quoteService: QuoteService
-  ){}
+  ) {}
 
-  loadParts(){
+  loadParts() {
     this.partService.getAllParts().subscribe({
       next: (response) => {
         this.dataParts = response;
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des pièces :', error);
-      }
-    })
+      },
+    });
   }
 
-  loadService(){
+  loadService() {
     this.subcategoryService.getAllSubCategoryServices().subscribe({
       next: (response) => {
         this.subCategories = response;
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des services :', error);
-      }
-    })
+      },
+    });
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.selectedProblem = history.state.problem;
     if (!this.selectedProblem) {
       console.error('Aucun details selectionner.');
@@ -121,7 +130,7 @@ export class CreateDevisComponent implements OnInit{
       estimatedprice: subcat.estimatedprice,
       nbrepair: 1, // nila asina formulaire misaisir azy koa
       description: `Réparation de ${subcat.name}`,
-      complexity: 1, // mila modifiena na esorina fa ataoko 1 fotsiny alony 
+      complexity: 1, // mila modifiena na esorina fa ataoko 1 fotsiny alony
     }));
 
     const requestData = {
@@ -136,18 +145,16 @@ export class CreateDevisComponent implements OnInit{
     // console.log(requestData);
     this.quoteService.createQuote(requestData).subscribe({
       next: (response) => {
-        this.loading = true
+        this.loading = true;
         console.log('Devis créé avec succès:', response);
       },
       error: (error) => {
         console.error('Erreur lors de la création du devis:', error);
       },
       complete: () => {
-        this.loading = false
+        this.loading = false;
         console.log('Requête terminée.');
       },
     });
-
   }
-
 }

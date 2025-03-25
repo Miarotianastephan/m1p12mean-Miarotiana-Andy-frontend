@@ -63,7 +63,19 @@ export class HeaderComponent implements OnInit {
         { label: 'Tache', icon: 'pi pi-book', route: 'task' },
       ];
     } else {
-      this.items = [];
+      this.items = [
+        {
+          label: 'Rendez-vous',
+          icon: 'pi pi-chart-bar',
+          route: 'manager/rdv',
+        },
+        { label: 'Mecanicien', icon: 'pi pi-book', route: 'manager/meca' },
+        {
+          label: 'Request',
+          icon: 'pi pi-question-circle',
+          route: 'manager/problem',
+        },
+      ];
     }
   }
   logOut() {

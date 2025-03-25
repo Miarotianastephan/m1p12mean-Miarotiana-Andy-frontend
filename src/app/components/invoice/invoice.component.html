@@ -1,16 +1,21 @@
-<div *ngIf="id_problem !== undefined">
-  <div class="header border border-gray rounded-lg p-2 flex justify-end gap-4">
-    <p-datepicker
-      [(ngModel)]="selectedDateTime"
-      [showTime]="true"
-      [hourFormat]="'24'"
-      [disabledDates]="disabledDays"
-    />
+<div class="p-2 border rounded-lg flex justify-end gap-2 items-center mb-1">
+  <span class="text-sm">{{ problem.description }}</span>
+</div>
+<p-skeleton
+  *ngIf="onLoadinggetDevisByProblem()"
+  height="20rem"
+  class="flex w-full mb-2"
+/>
+<div *ngIf="!onLoadinggetDevisByProblem() && !onErrorgetDevisByProblem()">
+  <div
+    *ngIf="onUsegetDevisByProblem() as devis"
+    class="header border border-gray rounded-lg p-2 flex justify-end gap-4"
+  >
     <p-floatlabel class="w-full md:w-40" variant="on">
       <p-select
-        [(ngModel)]="selectedCity"
-        [options]="cities"
-        optionLabel="version"
+        [(ngModel)]="selectedDevis"
+        [options]="devis"
+        optionLabel="_id"
         class="text-xs"
         size="large"
         inputId="on_label"
@@ -18,20 +23,30 @@
       />
       <label for="on_label">Version</label>
     </p-floatlabel>
-    <button pButton [outlined]="true">
-      <i class="pi pi-check-circle" pButtonIcon></i>
-      <span class="text-xs" pButtonLabel> Accepter </span>
-    </button>
-    <button pButton [outlined]="true" (click)="visible = true">
-      <i class="pi pi-comment" pButtonIcon></i>
-      <span class="text-xs" pButtonLabel> Commentaire </span>
-    </button>
+    <p-tag icon="pi pi-check-circle" severity="success" value="Accepter" />
+    <p-button
+      [outlined]="true"
+      (click)="visible = true"
+      badge="2"
+      icon="pi pi-comment"
+      label="Commentaire"
+      badgeSeverity="contrast"
+    />
     <button pButton>
       <i class="pi pi-file-export" pButtonIcon></i>
       <span class="text-xs" pButtonLabel> exporter </span>
     </button>
   </div>
-  <div class="p-5 border border-gray rounded-lg min-h-[600px] mt-1">
+  <div
+    *ngIf="selectedDevis === undefined"
+    class="p-5 border border-gray rounded-lg mt-1"
+  >
+    <span class="text-sm"> Aucun version de devis selectionner </span>
+  </div>
+  <div
+    *ngIf="selectedDevis !== undefined"
+    class="p-5 border border-gray rounded-lg min-h-[500px] mt-1"
+  >
     <div class="flex justify-between text-gray-400 items-center">
       <div class="flex flex-col text-xs space-y-1">
         <span>client</span>
@@ -40,14 +55,20 @@
       </div>
       <div class="flex flex-col text-xs space-y-1 text-right">
         <span>Balance Duo</span>
-        <span class="text-3xl text-black font-bold">1.000.000 Ar</span>
-        <span>Date : 20/06/2020</span>
+        <span class="text-3xl text-black font-bold"
+          >{{ selectedDevis.totalprice }} Ar</span
+        >
+        <span
+          >Estimation de reparation :
+          {{ selectedDevis.estimationtime }} min</span
+        >
+        <span>Date : {{ selectedDevis.datequote | date : "dd/MM/yyyy" }}</span>
       </div>
     </div>
     <p-divider align="left" type="solid">
       <span class="text-xs">travaux a faire</span>
     </p-divider>
-    <p-table [value]="todo">
+    <p-table [value]="selectedDevis.repair">
       <ng-template #header>
         <tr class="text-sm">
           <th>Reparation</th>
@@ -59,22 +80,21 @@
       </ng-template>
       <ng-template #body let-rowData>
         <tr class="text-sm">
-          <td>{{ rowData.name }}</td>
+          <td>{{ rowData.subcategoryname }}</td>
           <td>{{ rowData.description }}</td>
-          <td>{{ rowData.quantity }}</td>
-          <td>{{ rowData.cost }}</td>
-          <td>200 Ar</td>
+          <td>{{ rowData.nbrepair }}</td>
+          <td>{{ rowData.estimatedprice }}</td>
+          <td>{{ rowData.nbrepair * rowData.estimatedprice }}</td>
         </tr>
       </ng-template>
     </p-table>
     <p-divider align="left" type="solid">
       <span class="text-xs">Piece necessaire</span>
     </p-divider>
-    <p-table [value]="todo">
+    <p-table [value]="selectedDevis.items">
       <ng-template #header>
         <tr class="text-sm">
-          <th>Reparation</th>
-          <th>Description</th>
+          <th>Nom du piece</th>
           <th>Quantite</th>
           <th>Cost</th>
           <th>Total cost</th>
@@ -82,62 +102,60 @@
       </ng-template>
       <ng-template #body let-rowData>
         <tr class="text-sm">
-          <td>{{ rowData.name }}</td>
-          <td>{{ rowData.description }}</td>
-          <td>{{ rowData.quantity }}</td>
-          <td>{{ rowData.cost }}</td>
-          <td>200 Ar</td>
+          <td>{{ rowData.partname }}</td>
+          <td>{{ rowData.quantite }}</td>
+          <td>{{ rowData.price }}</td>
+          <td>{{ rowData.price * rowData.quantite }} Ar</td>
         </tr>
       </ng-template>
     </p-table>
   </div>
-  <p-drawer
-    header="Commentaire"
-    [(visible)]="visible"
-    styleClass="!w-full md:!w-80 lg:!w-[30rem]"
-    position="right"
-  >
-    <form action="">
-      <p-floatlabel variant="in">
-        <textarea
-          pTextarea
-          id="over_label"
-          [(ngModel)]="commentaire"
-          rows="5"
-          cols="30"
-          style="resize: none"
-          class="h-full w-full"
-          placeholder="...."
-          name="commentaire"
-        >
-        </textarea>
-        <label for="in_label">commentaire</label>
-      </p-floatlabel>
-      <div class="flex justify-end">
-        <button pButton iconPos="right" disabled>
-          <i class="pi pi-send" pButtonIcon></i>
-          <span pButtonLabel class="text-xs">Envoyer</span>
-        </button>
-      </div>
-    </form>
-    <div class="mt-4">
-      <p-panel>
-        <ng-template #header>
-          <div class="flex items-center gap-2">
-            <p-avatar
-              image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-              shape="circle"
-            />
-            <span class="font-bold text-sm">Amy Elsner</span>
-          </div>
-        </ng-template>
-        <p class="text-xs">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim dicta,
-          recusandae, odio autem fugit aperiam omnis amet perspiciatis quia
-          optio voluptatibus maiores nisi debitis esse, ducimus eius velit nulla
-          in?
-        </p>
-      </p-panel>
-    </div>
-  </p-drawer>
 </div>
+<p-drawer
+  header="Commentaire"
+  [(visible)]="visible"
+  styleClass="!w-full md:!w-80 lg:!w-[30rem]"
+  position="right"
+>
+  <form action="">
+    <p-floatlabel variant="in">
+      <textarea
+        pTextarea
+        id="over_label"
+        [(ngModel)]="commentaire"
+        rows="5"
+        cols="30"
+        style="resize: none"
+        class="h-full w-full"
+        placeholder="...."
+        name="commentaire"
+      >
+      </textarea>
+      <label for="in_label">commentaire</label>
+    </p-floatlabel>
+    <div class="flex justify-end">
+      <button pButton iconPos="right" disabled>
+        <i class="pi pi-send" pButtonIcon></i>
+        <span pButtonLabel class="text-xs">Envoyer</span>
+      </button>
+    </div>
+  </form>
+  <div class="mt-4">
+    <p-panel>
+      <ng-template #header>
+        <div class="flex items-center gap-2">
+          <p-avatar
+            image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+            shape="circle"
+          />
+          <span class="font-bold text-sm">Amy Elsner</span>
+        </div>
+      </ng-template>
+      <p class="text-xs">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim dicta,
+        recusandae, odio autem fugit aperiam omnis amet perspiciatis quia optio
+        voluptatibus maiores nisi debitis esse, ducimus eius velit nulla in?
+      </p>
+    </p-panel>
+  </div>
+</p-drawer>
