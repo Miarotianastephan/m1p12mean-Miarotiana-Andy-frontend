@@ -1,0 +1,67 @@
+<div class="grid grid-cols-3 gap-2">
+  <p-panel [toggleable]="true">
+    <ng-template #header>
+      <div class="flex items-center gap-2">
+        <p-avatar
+          image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+          shape="circle"
+        />
+        <span class="font-bold text-sm">Andy RAKOTONAVALONA</span>
+      </div>
+    </ng-template>
+    <ng-template #footer>
+      <div class="flex flex-wrap items-center gap-4 justify-between">
+        <div></div>
+        <p-button
+          icon="pi pi-users"
+          label="Assigne mecano"
+          size="small"
+          outlined="variant"
+          (click)="showDialog()"
+        />
+      </div>
+    </ng-template>
+    <div>
+      <p class="m-0 text-xs">Tapaka croix</p>
+      <p class="text-xs mb-2">voiture : LAMBODRHINI</p>
+      <p-progressbar [value]="0" [style]="{ height: '15px' }" />
+    </div>
+  </p-panel>
+</div>
+<p-dialog
+  header="Mecanicien"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '45rem' }"
+>
+  <div class="grid grid-cols-2 gap-2">
+    <div class="flex gap-2 border p-2 rounded-lg">
+      <p-avatar label="S" shape="circle" />
+      <div class="flex flex-col space-y-1">
+        <span class="text-sm font-bold">Andy Rakotonavalona</span>
+        <span class="text-xs">Competences : Pneumatique , Moteur , Frein</span>
+        <span class="text-xs">Contact : 0347860552</span>
+      </div>
+    </div>
+    <div class="flex gap-2 border p-2 rounded-lg">
+      <p-avatar label="S" shape="circle" />
+      <div class="flex flex-col space-y-1">
+        <span class="text-sm font-bold">Andy Rakotonavalona</span>
+        <span class="text-xs">Competences : Pneumatique , Moteur , Frein</span>
+        <span class="text-xs">Contact : 0347860552</span>
+      </div>
+    </div>
+    <div class="flex gap-2 border p-2 rounded-lg">
+      <p-avatar label="S" shape="circle" />
+      <div class="flex flex-col space-y-1">
+        <span class="text-sm font-bold">Andy Rakotonavalona</span>
+        <span class="text-xs">Competences : Pneumatique , Moteur , Frein</span>
+        <span class="text-xs">Contact : 0347860552</span>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-end gap-2">
+    <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+    <p-button label="Save" (click)="visible = false" />
+  </div>
+</p-dialog>

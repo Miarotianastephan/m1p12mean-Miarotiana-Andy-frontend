@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
+import { AvatarModule } from 'primeng/avatar';
+import { PanelModule } from 'primeng/panel';
 interface Column {
   field: string;
   header: string;
@@ -38,6 +40,8 @@ interface Mecaniciens {
     ProgressBarModule,
     TagModule,
     ButtonModule,
+    AvatarModule,
+    PanelModule,
   ],
   templateUrl: './repair.component.html',
   styleUrl: './repair.component.css',

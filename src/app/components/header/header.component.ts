@@ -79,6 +79,11 @@ export class HeaderComponent implements OnInit {
           icon: 'pi pi-question-circle',
           route: 'manager/problem',
         },
+        {
+          label: 'Suivi de reparation',
+          icon: 'pi pi-calendar-clock',
+          route: 'manager/suivireparation',
+        },
       ];
     }
   }
