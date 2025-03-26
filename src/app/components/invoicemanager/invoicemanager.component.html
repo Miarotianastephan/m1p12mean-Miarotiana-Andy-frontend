@@ -1,4 +1,4 @@
-<div class="p-2 border rounded-lg flex justify-end gap-2 items-center mb-1">
+<div class="p-2 border rounded-lg flex justify-between gap-2 items-center mb-1">
   <span class="text-sm">{{ problem.description }}</span>
   <button pButton [outlined]="true" (click)="showDialog()">
     <i class="pi pi-plus-circle" pButtonIcon></i>
@@ -13,7 +13,7 @@
 <div *ngIf="!onLoadinggetDevisByProblem() && !onErrorgetDevisByProblem()">
   <div
     *ngIf="onUsegetDevisByProblem() as devis"
-    class="header border border-gray rounded-lg p-2 flex justify-end gap-4"
+    class="header border border-gray rounded-lg p-2 flex gap-4"
   >
     <p-floatlabel class="w-full md:w-40" variant="on">
       <p-select
@@ -27,25 +27,31 @@
       />
       <label for="on_label">Version</label>
     </p-floatlabel>
-    <p-tag icon="pi pi-check-circle" severity="success" value="Accepter" />
-    <p-button
-      [outlined]="true"
-      (click)="visible = true"
-      badge="2"
-      icon="pi pi-comment"
-      label="Commentaire"
-      badgeSeverity="contrast"
-    />
-    <button pButton>
-      <i class="pi pi-file-export" pButtonIcon></i>
-      <span class="text-xs" pButtonLabel> exporter </span>
-    </button>
   </div>
   <div
     *ngIf="selectedDevis === undefined"
     class="p-5 border border-gray rounded-lg mt-1"
   >
     <span class="text-sm"> Aucun version de devis selectionner </span>
+  </div>
+  <div *ngIf="selectedDevis !== undefined" class="flex justify-end p-2 gap-2">
+    <p-button
+      [outlined]="true"
+      icon="pi pi-check-circle"
+      label="Accepter"
+      badgeSeverity="contrast"
+    />
+    <p-button
+      [outlined]="true"
+      (click)="visible = true"
+      [badge]="selectedDevis.commentaire.length.toString()"
+      icon="pi pi-comment"
+      label="Commentaire"
+    />
+    <button pButton>
+      <i class="pi pi-file-export" pButtonIcon></i>
+      <span class="text-xs" pButtonLabel> exporter </span>
+    </button>
   </div>
   <div
     *ngIf="selectedDevis !== undefined"
@@ -54,8 +60,14 @@
     <div class="flex justify-between text-gray-400 items-center">
       <div class="flex flex-col text-xs space-y-1">
         <span>client</span>
-        <span class="text-sm font-bold text-black">Andy Rakotonavalona</span>
-        <span>LAMBORGHINI Urus 2024</span>
+        <span class="text-sm font-bold text-black">{{
+          selectedDevis.nameuser
+        }}</span>
+        <span
+          >{{ selectedDevis.marquecar }} {{ selectedDevis.modelcar }} ({{
+            selectedDevis.yearcar
+          }})</span
+        >
       </div>
       <div class="flex flex-col text-xs space-y-1 text-right">
         <span>Balance Duo</span>
@@ -120,6 +132,7 @@
   [(visible)]="visible"
   styleClass="!w-full md:!w-80 lg:!w-[30rem]"
   position="right"
+  *ngIf="selectedDevis !== undefined"
 >
   <form action="">
     <p-floatlabel variant="in">
@@ -138,27 +151,48 @@
       <label for="in_label">commentaire</label>
     </p-floatlabel>
     <div class="flex justify-end">
-      <button pButton iconPos="right" disabled>
-        <i class="pi pi-send" pButtonIcon></i>
-        <span pButtonLabel class="text-xs">Envoyer</span>
-      </button>
+      <p-button
+        icon="pi pi-send"
+        iconPos="right"
+        (click)="onUseSendCommentaire()"
+        [loading]="useSendCommentaire.isPending()"
+        label="Envoyer"
+        size="small"
+        [disabled]="commentaire === undefined"
+      />
     </div>
   </form>
-  <div class="mt-4">
-    <p-panel>
+  <div class="mt-4 flex flex-col space-y-1">
+    <p-panel
+      *ngFor="let element of selectedDevis.commentaire.slice().reverse()"
+    >
       <ng-template #header>
-        <div class="flex items-center gap-2">
-          <p-avatar
-            image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-            shape="circle"
-          />
-          <span class="font-bold text-sm">Amy Elsner</span>
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-2">
+            <p-avatar
+              [image]="
+                element.providerClient
+                  ? 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png'
+                  : undefined
+              "
+              [label]="element.providerClient ? undefined : 'G'"
+              shape="circle"
+            />
+            <span class="font-bold text-sm">
+              {{ element.providerClient ? selectedDevis.nameuser : "Garage" }}
+            </span>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #footer>
+        <div class="flex justify-end">
+          <span class="text-xs">{{
+            element.datecomment | date : "dd/MM/yyyy hh:mm"
+          }}</span>
         </div>
       </ng-template>
       <p class="text-xs">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim dicta,
-        recusandae, odio autem fugit aperiam omnis amet perspiciatis quia optio
-        voluptatibus maiores nisi debitis esse, ducimus eius velit nulla in?
+        {{ element.comment }}
       </p>
     </p-panel>
   </div>

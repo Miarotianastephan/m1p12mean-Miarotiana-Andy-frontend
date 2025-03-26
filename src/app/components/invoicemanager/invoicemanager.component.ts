@@ -64,7 +64,7 @@ export class InvoicemanagerComponent implements OnChanges {
   selectedDevis: Quote | undefined;
   visible: boolean = false;
   visible_modal: boolean = false;
-  commentaire: string = '';
+  commentaire: string | undefined;
   search_part: string = '';
   search_service: string = '';
   parts: Parts[] = [];
@@ -91,6 +91,44 @@ export class InvoicemanagerComponent implements OnChanges {
     const data = this.usegetDevisByProblem.data().devis;
     return data;
   }
+  async onUseSendCommentaire() {
+    const idquote_devis = this.selectedDevis!._id;
+    await this.useSendCommentaire.mutateAsync({
+      idquote: idquote_devis,
+      commentaire: this.commentaire!,
+    });
+    this.commentaire = '';
+  }
+  async SendCommentaire(id_quote: String, commentaire: String) {
+    try {
+      const response = await instanceAxios.post(
+        '/manager/addcomment',
+        { id_quote, commentaire },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      this.router.navigate(['/']);
+    }
+  }
+  useSendCommentaire = injectMutation(() => ({
+    mutationFn: (data: { idquote: String; commentaire: String }) =>
+      this.SendCommentaire(data.idquote, data.commentaire),
+    onError() {},
+    onSuccess() {},
+    onSettled: () => {
+      this.queryClient.invalidateQueries({
+        queryKey: [
+          'devisbyproblem',
+          this.problem._id,
+          localStorage.getItem('token'),
+        ],
+      });
+    },
+  }));
   async getDevisByProblem() {
     try {
       const response = await instanceAxios.get('/manager/get_devisbyproblem', {

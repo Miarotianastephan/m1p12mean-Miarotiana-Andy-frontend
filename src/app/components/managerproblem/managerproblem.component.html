@@ -37,7 +37,7 @@
                 image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
                 shape="circle"
               />
-              <span class="font-bold text-sm">Amy Elsner</span>
+              <span class="font-bold text-sm">{{ problem.nameuser }}</span>
             </div>
           </ng-template>
           <ng-template #footer>
@@ -51,7 +51,14 @@
               </button>
             </div>
           </ng-template>
-          <p class="m-0 text-xs">{{ problem.description }}</p>
+          <div>
+            <p class="m-0 text-xs">{{ problem.description }}</p>
+            <p class="text-xs">
+              voiture : {{ problem.marquecar }}-{{ problem.modelcar }} ({{
+                problem.yearcar
+              }})
+            </p>
+          </div>
         </p-panel>
       </div>
     </div>

@@ -15,12 +15,20 @@ interface RepairSubCategory {
   description: string;
   complexity: 1 | 2 | 3; // Complexity can be 1, 2, or 3
 }
-
+interface Commentaire {
+  providerClient: Boolean;
+  comment: String;
+  datecomment: Date;
+}
 export interface Quote {
   _id: string;
   problemid: string; // ObjectId reference to ProblemReport
   userid: string; // ObjectId reference to User
+  nameuser: string;
   carid: string; // ObjectId reference to Car
+  marquecar: String;
+  modelcar: String;
+  yearcar: Number;
   items: QuotationDetail[];
   repair: RepairSubCategory[];
   totalprice: number;
@@ -31,4 +39,5 @@ export interface Quote {
   isAccepted: boolean;
   createdAt: Date; // Automatically managed by Mongoose
   updatedAt: Date; // Automatically managed by Mongoose
+  commentaire: Commentaire[];
 }
