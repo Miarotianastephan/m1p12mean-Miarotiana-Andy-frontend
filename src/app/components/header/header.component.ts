@@ -69,8 +69,13 @@ export class HeaderComponent implements OnInit {
     } else {
       this.items = [
         {
-          label: 'Rendez-vous',
+          label: 'Tableau de bord',
           icon: 'pi pi-chart-bar',
+          route: 'manager/boardmanager',
+        },
+        {
+          label: 'Rendez-vous',
+          icon: 'pi pi-calendar',
           route: 'manager/rdv',
         },
         { label: 'Mecanicien', icon: 'pi pi-book', route: 'manager/meca' },
