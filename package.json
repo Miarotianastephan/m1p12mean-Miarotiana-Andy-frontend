@@ -22,6 +22,8 @@
     "appli-angular-vite": "file:",
     "axios": "^1.8.3",
     "chart.js": "^4.4.8",
+    "dayjs": "^1.11.13",
+    "dayjs-plugin-utc": "^0.1.2",
     "primeicons": "^7.0.0",
     "primeng": "^19.0.9",
     "rxjs": "~7.8.0",
