@@ -2,11 +2,12 @@ import { ChangeDetectorRef, Component, effect, inject, OnInit, PLATFORM_ID } fro
 import { Button } from 'primeng/button';
 import { isPlatformBrowser } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
+import { DividerModule } from 'primeng/divider';
 
 
 @Component({
   selector: 'app-boardmanager',
-  imports: [Button, ChartModule],
+  imports: [Button, ChartModule, DividerModule],
   templateUrl: './boardmanager.component.html',
   styleUrl: './boardmanager.component.css'
 })
