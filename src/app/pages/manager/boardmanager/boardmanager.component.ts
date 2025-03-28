@@ -3,11 +3,13 @@ import { Button } from 'primeng/button';
 import { isPlatformBrowser } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 
 
 @Component({
   selector: 'app-boardmanager',
-  imports: [Button, ChartModule, DividerModule],
+  imports: [Button, ChartModule, DividerModule, ButtonModule, RippleModule],
   templateUrl: './boardmanager.component.html',
   styleUrl: './boardmanager.component.css'
 })
