@@ -170,12 +170,11 @@
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-2">
             <p-avatar
-              [image]="
+              [label]="
                 element.providerClient
-                  ? 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png'
-                  : undefined
+                  ? getInitialName(selectedDevis.nameuser)
+                  : 'G'
               "
-              [label]="element.providerClient ? undefined : 'G'"
               shape="circle"
             />
             <span class="font-bold text-sm">

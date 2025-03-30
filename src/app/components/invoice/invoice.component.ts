@@ -23,6 +23,7 @@ import { Problem } from '../../interface/Problem';
 import { Router } from '@angular/router';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
+import { getInitials } from '../../func/global.function';
 @Component({
   selector: 'app-invoice',
   imports: [
@@ -61,6 +62,9 @@ export class InvoiceComponent implements OnChanges {
   }
   showDialog() {
     this.visible_modal = true;
+  }
+  getInitialName(name: string) {
+    return getInitials(name);
   }
   onErrorgetDevisByProblem() {
     const error = this.usegetDevisByProblem.isError();

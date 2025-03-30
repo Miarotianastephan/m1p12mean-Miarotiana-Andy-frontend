@@ -1,20 +1,22 @@
 interface IMechanic {
-  name: string;
+  fullName: string;
   email: string;
-  phone?: string;
+  phonenumber: string;
   skills: {
     categoryId: string;
-    categoryName: string;
+    namecategory: string;
   }[];
 }
 
 interface IRepairProgression {
+  _id: string;
   categoryid: string;
   subcategory: string;
   subcategoryname: string;
-  status: 'completed' | 'in-progress';
+  status: 'completed' | 'in-progress' | 'en attente';
   subacategorystartdate?: Date | null;
   subacategoryenddate?: Date | null;
+  canRepair?: boolean | null;
 }
 
 export interface Reparation {
@@ -25,6 +27,7 @@ export interface Reparation {
   nameuser: string;
   repairstartdate?: Date | null;
   repairenddate?: Date | null;
+  repairenddateestimated?: Date | null;
   final_status: 'completed' | 'in-progress';
   status_creneaux: 'creneaux att' | 'creneaux dispo' | 'en reparation';
   repairCost: number;

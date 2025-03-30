@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import instanceAxios from '../axios-config';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { UserService } from '../services/UserService.service';
 import { Router } from '@angular/router';
 export interface User {
@@ -12,7 +12,11 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private userservice: UserService, private router: Router) {}
+  constructor(
+    private userservice: UserService,
+    private router: Router,
+    private client: QueryClient
+  ) {}
   async UserConnectedByToken() {
     try {
       const response = await instanceAxios.get('/auth/user_connected', {
@@ -37,4 +41,12 @@ export class AuthService {
     refetchOnMount: false,
     refetchOnReconnect: false,
   }));
+
+  logOutApp() {
+    this.client.removeQueries({
+      queryKey: ['user_connected', localStorage.getItem('token')],
+    });
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
+  }
 }

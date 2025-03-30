@@ -38,7 +38,7 @@
           <ng-template #header>
             <div class="flex items-center gap-2">
               <p-avatar
-                image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+                [label]="getInitialName(problem.nameuser)"
                 shape="circle"
               />
               <span class="font-bold text-sm">{{ problem.nameuser }}</span>

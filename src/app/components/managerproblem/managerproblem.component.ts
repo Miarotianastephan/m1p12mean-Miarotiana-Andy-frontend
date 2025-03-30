@@ -9,6 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { CommonModule } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InvoicemanagerComponent } from '../invoicemanager/invoicemanager.component';
+import { getInitials } from '../../func/global.function';
 @Component({
   selector: 'app-managerproblem',
   imports: [
@@ -23,8 +24,11 @@ import { InvoicemanagerComponent } from '../invoicemanager/invoicemanager.compon
   styleUrl: './managerproblem.component.css',
 })
 export class ManagerproblemComponent {
-  constructor(private queryClient: QueryClient, private router: Router) {}
   problem: Problem | undefined;
+  constructor(private queryClient: QueryClient, private router: Router) {}
+  getInitialName(name: string) {
+    return getInitials(name);
+  }
   ongetDevis(problem: Problem) {
     this.problem = problem;
   }

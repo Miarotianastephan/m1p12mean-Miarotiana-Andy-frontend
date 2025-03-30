@@ -24,10 +24,7 @@
   <p-panel [toggleable]="true" *ngFor="let repair of onusegetReparation()">
     <ng-template #header>
       <div class="flex items-center gap-2">
-        <p-avatar
-          image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-          shape="circle"
-        />
+        <p-avatar [label]="getInitialName(repair.nameuser)" shape="circle" />
         <span class="font-bold text-sm">{{ repair.nameuser }}</span>
       </div>
     </ng-template>
@@ -37,7 +34,12 @@
           <span class="text-xs">Aucun mecaniciens assignier</span>
         </div>
         <div *ngFor="let item_mecano of repair.mechanics">
-          <p-avatar icon="pi pi-user" class="mr-2" shape="circle" />
+          <p-avatar
+            [label]="getInitialName(item_mecano.fullName)"
+            icon="pi pi-user"
+            class="mr-2"
+            shape="circle"
+          />
         </div>
         <p-button
           *ngIf="repair.mechanics.length === 0"
@@ -65,6 +67,14 @@
           size="small"
           outlined="variant"
         />
+        <p-button
+          *ngIf="repair.status_creneaux === 'en reparation'"
+          icon="pi pi-calendar-clock"
+          label="En reparation"
+          size="small"
+          outlined="variant"
+          (click)="showDrawer(repair)"
+        />
       </div>
     </ng-template>
     <div>
@@ -74,7 +84,10 @@
           repair.yearcar
         }})
       </p>
-      <p-progressbar [value]="0" [style]="{ height: '15px' }" />
+      <p-progressbar
+        [value]="PercentProgression(repair)"
+        [style]="{ height: '15px' }"
+      />
     </div>
   </p-panel>
 </div>
@@ -137,7 +150,7 @@
   header="Mecanicien"
   [modal]="true"
   [(visible)]="visible"
-  [style]="{ width: '50rem' }"
+  [style]="{ width: '40rem' }"
 >
   <div *ngIf="onLoadinggetMecaniciens()">
     <p-skeleton styleClass="mb-2" />
@@ -146,7 +159,7 @@
   </div>
   <div
     *ngIf="!onLoadinggetMecaniciens() && !onErrorgetMecaniciens()"
-    class="grid grid-cols-2 gap-2"
+    class="flex flex-col space-y-1"
   >
     <div
       class="flex border p-3 rounded-lg transition-shadow duration-300 cursor-pointer"
@@ -154,7 +167,11 @@
       (click)="assignMecano(item)"
       [ngClass]="{ 'shadow-md': isClicked.has(item) }"
     >
-      <p-avatar label="S" class="mr-2" size="large" />
+      <p-avatar
+        [label]="getInitialName(item.fullName)"
+        class="mr-2"
+        size="large"
+      />
       <div class="flex flex-col space-y-1">
         <span class="text-sm font-bold">{{ item.fullName }}</span>
         <span class="text-xs">Compétences : {{ skillsText(item) }} </span>
@@ -178,3 +195,93 @@
     />
   </div>
 </p-dialog>
+<p-drawer
+  *ngIf="reparation_progression"
+  header="Suivi de reparation"
+  [(visible)]="repartion_visible"
+  position="right"
+  styleClass="!w-full md:!w-80 lg:!w-[45rem]"
+>
+  <div class="flex flex-col space-y-5 p-2">
+    <div class="flex justify-between">
+      <span class="text-sm">Cout total a payer : </span>
+      <span class="text-3xl font-bold">1.000.000 Ar</span>
+    </div>
+    <div class="flex flex-col text-sm space-y-2">
+      <div class="flex justify-between">
+        <span>Debut du reparation : </span>
+        <span>
+          {{
+            reparation_progression.repairstartdate | date : "dd-MM-YYYY HH:mm"
+          }}</span
+        >
+      </div>
+      <div class="flex justify-between">
+        <span>Estimation fin du reparation : </span>
+        <span>
+          {{
+            reparation_progression.repairenddateestimated
+              | date : "dd-MM-YYYY HH:mm"
+          }}</span
+        >
+      </div>
+      <div class="flex justify-between">
+        <span>Reel fin du reparation : </span>
+        <span>
+          {{
+            reparation_progression.repairenddate | date : "dd-MM-YYYY HH:mm"
+          }}</span
+        >
+      </div>
+    </div>
+    <div class="flex flex-col space-y-5">
+      <span class="text-sm font-bold">Listes de reparations a faire </span>
+      <p-table [value]="reparation_progression!.repair" showGridlines>
+        <ng-template #header let-columns>
+          <tr class="text-sm">
+            <th>Nom</th>
+            <th>Date Debut</th>
+            <th>Date Fin</th>
+            <th>Status</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-rowData let-columns="columns">
+          <tr class="text-sm">
+            <td>{{ rowData.subcategoryname }}</td>
+            <td>
+              {{ rowData.subacategorystartdate | date : "dd/MM/yyyy HH:mm" }}
+            </td>
+            <td>
+              {{ rowData.subacategoryenddate | date : "dd/MM/yyyy HH:mm" }}
+            </td>
+            <td>
+              <p-tag [severity]="getColorTag(rowData.status)">
+                <span class="text-xs">{{ rowData.status }}</span>
+              </p-tag>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="flex flex-col space-y-5">
+      <span class="text-sm font-bold"
+        >Les mecaniciens responsable a cette reparation
+      </span>
+      <div
+        class="flex p-2 border rounded-lg"
+        *ngFor="let item of reparation_progression.mechanics"
+      >
+        <p-avatar
+          [label]="getInitialName(item.fullName)"
+          class="mr-2"
+          shape="circle"
+        />
+        <div class="flex flex-col space-y-1">
+          <span class="text-sm font-bold">{{ item.fullName }}</span>
+          <span class="text-xs">Compétences : {{ skillsText(item) }} </span>
+          <span class="text-xs">Contact : {{ item.phonenumber }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-drawer>

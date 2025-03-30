@@ -22,6 +22,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { DrawerModule } from 'primeng/drawer';
+import { getInitials } from '../../func/global.function';
 
 dayjs.extend(utc); // Active le plugin utc
 @Component({
@@ -39,12 +41,12 @@ dayjs.extend(utc); // Active le plugin utc
     SkeletonModule,
     DatePickerModule,
     FormsModule,
+    DrawerModule,
   ],
   templateUrl: './repairmanager.component.html',
   styleUrl: './repairmanager.component.css',
 })
 export class RepairmanagerComponent {
-  constructor(private queryClient: QueryClient, private router: Router) {}
   repair_choix!: Reparation;
   visible: boolean = false;
   visible_modal_creneaux: boolean = false;
@@ -52,7 +54,28 @@ export class RepairmanagerComponent {
   isClicked = new Set<any>();
   date: Date | undefined;
   time: Date | undefined;
+  repartion_visible: boolean = false;
+  reparation_progression: Reparation | undefined;
   creneaux: { dateBegin: Date; dateFin: Date }[] = [];
+  constructor(private queryClient: QueryClient, private router: Router) {}
+  getInitialName(name: string) {
+    return getInitials(name);
+  }
+  PercentProgression(item: Reparation) {
+    const todo = item.repair;
+    const count_todo = todo.length;
+    let count_finish = 0;
+    todo.forEach((element) => {
+      if (element.status === 'completed') {
+        count_finish++;
+      }
+    });
+    return ((count_finish * 100) / count_todo).toFixed(2);
+  }
+  showDrawer(item: Reparation) {
+    this.repartion_visible = true;
+    this.reparation_progression = item;
+  }
   showDialog(item: Reparation) {
     this.visible = true;
     this.repair_choix = item;
@@ -96,12 +119,20 @@ export class RepairmanagerComponent {
     }
   }
 
-  skillsText(mecanicien: IMechanic): string {
+  skillsText(mecanicien: any): string {
     return mecanicien.skills.length > 0
-      ? mecanicien.skills.map((skill) => skill.namecategory).join(', ')
+      ? mecanicien.skills.map((skill: any) => skill.namecategory).join(', ')
       : 'Aucune compétence';
   }
-
+  getColorTag(status: string) {
+    if (status === 'in-progress') {
+      return 'warn';
+    } else if (status === 'en attente') {
+      return 'secondary';
+    } else {
+      return 'success';
+    }
+  }
   async CreateCreneaux(
     repair_choix_id: string,
     horaire_rdv: { dateBegin: Date; dateFin: Date }[]

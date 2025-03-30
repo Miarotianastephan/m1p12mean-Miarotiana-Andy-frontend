@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
@@ -20,6 +20,7 @@ import {
 import { Router } from '@angular/router';
 import instanceAxios from '../../api/axios-config';
 import { Problem } from '../../interface/Problem';
+import { getInitials } from '../../func/global.function';
 @Component({
   selector: 'app-quote',
   imports: [
@@ -40,15 +41,17 @@ import { Problem } from '../../interface/Problem';
   styleUrl: './quote.component.css',
   standalone: true,
 })
-export class QuoteComponent implements OnInit {
+export class QuoteComponent {
   visible: boolean = false;
   devis: string = '';
   selectedvoiture: any | undefined;
   problem: Problem | undefined;
   constructor(private queryClient: QueryClient, private router: Router) {}
-  ngOnInit(): void {}
   showDialog() {
     this.visible = true;
+  }
+  getInitialName(name: string) {
+    return getInitials(name);
   }
   initValeur() {
     this.visible = false;

@@ -13,6 +13,7 @@ import { AuthService } from '../../api/query/global.service';
 import { PopoverModule } from 'primeng/popover';
 import { DividerModule } from 'primeng/divider';
 import { Router } from '@angular/router';
+import { getInitials } from '../../func/global.function';
 @Component({
   selector: 'app-header',
   imports: [
@@ -39,9 +40,22 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private router: Router
   ) {}
+
+  loadingUserConnected() {
+    return this.authService.usegetUserConnectedByToken.isPending();
+  }
+  errorUserConnected() {
+    return this.authService.usegetUserConnectedByToken.isError();
+  }
+  onUseUserConnected() {
+    const data = this.authService.usegetUserConnectedByToken.data();
+    return data;
+  }
+  getInitialsName(fullname: string) {
+    return getInitials(fullname);
+  }
   async ngOnInit() {
     const user = await this.authService.UserConnectedByToken();
-    console.log('user_connected : ', user);
     if (user.role === 'client') {
       this.items = [
         { label: 'Accueil', icon: 'pi pi-palette', route: '/content' },
@@ -88,7 +102,6 @@ export class HeaderComponent implements OnInit {
     }
   }
   logOut() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
+    this.authService.logOutApp();
   }
 }
