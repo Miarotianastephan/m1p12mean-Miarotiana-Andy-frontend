@@ -58,7 +58,6 @@ export class HeaderComponent implements OnInit {
     const user = await this.authService.UserConnectedByToken();
     if (user.role === 'client') {
       this.items = [
-        { label: 'Accueil', icon: 'pi pi-palette', route: '/content' },
         { label: 'Voitures', icon: 'pi pi-car', route: '/content/mycars' },
         {
           label: 'Request',
@@ -69,6 +68,11 @@ export class HeaderComponent implements OnInit {
           label: 'Suivi de reparation',
           icon: 'pi pi-calendar-clock',
           route: '/content/myrepair',
+        },
+        {
+          label: 'Demande depanneur',
+          icon: 'pi pi-exclamation-triangle',
+          route: '/content',
         },
       ];
     } else if (user.role === 'mecanicien') {

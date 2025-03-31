@@ -34,13 +34,23 @@
   >
     <span class="text-sm"> Aucun version de devis selectionner </span>
   </div>
-  <div *ngIf="selectedDevis !== undefined" class="flex justify-end p-2 gap-2">
+  <div
+    *ngIf="selectedDevis !== undefined"
+    class="flex justify-end p-2 gap-2 items-center"
+  >
+    <p-tag
+      *ngIf="selectedDevis.isAccepted"
+      icon="pi pi-check-circle"
+      severity="success"
+      value="Accepter"
+    />
     <p-button
       [outlined]="true"
       (click)="visible = true"
       [badge]="selectedDevis.commentaire.length.toString()"
       icon="pi pi-comment"
       label="Commentaire"
+      size="small"
     />
     <button pButton>
       <i class="pi pi-file-export" pButtonIcon></i>

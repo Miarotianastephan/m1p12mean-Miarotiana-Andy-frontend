@@ -25,17 +25,16 @@
   [style]="{ width: '30rem' }"
 >
   <span class="p-text-secondary block mb-5"
-    >Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro dolor
-    consequuntur eligendi mollitia soluta quam harum minus quas laborum ut
-    magnam quisquam, iure voluptatem, eum sint et voluptatibus accusantium
-    officia!</span
+    >Complétez ce formulaire pour enregistrer une nouvelle voiture.</span
   >
   <form (ngSubmit)="onAddCar()">
     <div class="grid grid-cols-3 gap-2">
       <div class="flex flex-col gap-2 mb-2">
         <label for="username" class="font-semibold w-24">Marque</label>
+        <p-select *ngIf="onLoadinggetBrands()" class="w-full" loading="true" />
         <p-select
-          [options]="marque"
+          *ngIf="!onLoadinggetBrands() && !onErrorgetBrands()"
+          [options]="ongetBrands()"
           [(ngModel)]="selectedbrand"
           optionLabel="brand"
           placeholder="Select a brand"
@@ -78,7 +77,7 @@
           autocomplete="off"
           name="plaque"
           placeholder="..."
-          [(ngModel)]="chasis"
+          [(ngModel)]="plaque"
         />
       </div>
       <div class="flex flex-col gap-2 mb-2">
@@ -90,7 +89,7 @@
           autocomplete="off"
           placeholder="..."
           name="n_chasis"
-          [(ngModel)]="plaque"
+          [(ngModel)]="chasis"
         />
       </div>
     </div>
@@ -126,7 +125,7 @@
         />
       </div>
     </div>
-    <div class="card text-xs flex">
+    <div class="card text-xs flex justify-between items-center mb-2">
       <p-fileupload
         #fu
         chooseLabel="Choose"
@@ -143,7 +142,8 @@
         class="text-xs"
         label="Upload"
         (onClick)="fu.upload()"
-        severity="secondary"
+        outlined="variant"
+        size="small"
       />
     </div>
     <p-progressbar
@@ -153,8 +153,13 @@
     />
     <div class="flex justify-end mt-5 gap-2">
       <p-button label="Cancel" severity="secondary" (click)="visible = false" />
-      <button type="submit" pButton>
-        <span pButtonLabel>Save</span>
+      <button
+        type="submit"
+        pButton
+        [loading]="useCreateCar.isPending()"
+        [disabled]="imagevoiture === undefined"
+      >
+        <span pButtonLabel class="text-xs">Enregister</span>
       </button>
     </div>
   </form>

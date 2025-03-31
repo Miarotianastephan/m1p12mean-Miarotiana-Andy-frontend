@@ -47,6 +47,6 @@ export class AuthService {
       queryKey: ['user_connected', localStorage.getItem('token')],
     });
     localStorage.removeItem('token');
-    this.router.navigate(['/']);
+    window.location.href = '/';
   }
 }

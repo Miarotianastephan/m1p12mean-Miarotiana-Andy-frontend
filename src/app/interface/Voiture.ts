@@ -9,5 +9,6 @@ export interface Voiture {
   userId: string;
   year: number;
   _id: string;
-  imageVoiture: [string];
+  imageVoiture: string;
+  type: string;
 }
