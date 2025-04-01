@@ -137,14 +137,13 @@
   </div>
 </div>
 <p-drawer
-  header="Commentaire"
   [(visible)]="visible"
   styleClass="!w-full md:!w-80 lg:!w-[30rem]"
   position="right"
   *ngIf="selectedDevis !== undefined"
 >
-  <form action="">
-    <p-floatlabel variant="in">
+  <form class="mt-1">
+    <p-floatlabel variant="on">
       <textarea
         pTextarea
         id="over_label"

@@ -1,0 +1,4 @@
+#map {
+  height: 500px; /* Assurez-vous que la carte a une hauteur */
+  width: 100%; /* Optionnel : pour s'assurer qu'il prend toute la largeur */
+}

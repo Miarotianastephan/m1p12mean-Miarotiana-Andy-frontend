@@ -70,9 +70,9 @@ export class HeaderComponent implements OnInit {
           route: '/content/myrepair',
         },
         {
-          label: 'Demande depanneur',
+          label: 'Demande de remorquage',
           icon: 'pi pi-exclamation-triangle',
-          route: '/content',
+          route: '/content/remorquage',
         },
       ];
     } else if (user.role === 'mecanicien') {
