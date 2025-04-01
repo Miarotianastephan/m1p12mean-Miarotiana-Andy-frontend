@@ -5,6 +5,7 @@ import { GalleriaModule } from 'primeng/galleria';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { Voiture } from '../../interface/Voiture';
+import { ImageModule } from 'primeng/image';
 @Component({
   selector: 'app-cardcar',
   imports: [
@@ -12,6 +13,7 @@ import { Voiture } from '../../interface/Voiture';
     CardModule,
     DividerModule,
     GalleriaModule,
+    ImageModule,
     ButtonModule,
   ],
   templateUrl: './cardcar.component.html',

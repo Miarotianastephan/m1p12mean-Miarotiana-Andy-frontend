@@ -1,16 +1,12 @@
-<div class="flex items-center gap-5 border p-5 rounded-lg">
-  <p-galleria
-    [value]="car.imageVoiture"
-    [showIndicators]="true"
-    [showThumbnails]="false"
-    [changeItemOnIndicatorHover]="true"
-    class="border-none rounded-none"
-    style="width: 30rem"
-  >
-    <ng-template #item let-item>
-      <img [src]="item" style="width: 100%; display: block" />
-    </ng-template>
-  </p-galleria>
+<div class="grid grid-cols-2 gap-5 border p-3 rounded-lg">
+  <div class="rounded-lg">
+    <p-image
+      [src]="car.imageVoiture"
+      alt="Image"
+      class="rounded-lg"
+      width="400px"
+    />
+  </div>
   <div class="flex w-full flex-col space-y-4">
     <div class="flex flex-col">
       <span class="font-bold text-gray-500"
@@ -27,7 +23,7 @@
         <span class="text-xs">N-Chasis</span>
       </div>
     </div>
-    <div class="flex justify-between items-center mt-5">
+    <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col">
         <p-button
           icon="pi pi-bolt"
@@ -55,13 +51,8 @@
           size="small"
           class="mb-2"
         />
-        <span class="text-xl font-bold">Manuel</span>
+        <span class="text-xl font-bold">{{ car.type }}</span>
         <span class="text-xs">Type</span>
-      </div>
-      <div>
-        <a [routerLink]="'/content/myrepair'">
-          <p-button icon="pi pi-arrow-right" [iconPos]="'right'" size="small" />
-        </a>
       </div>
     </div>
   </div>
