@@ -33,6 +33,7 @@ import { SubService } from '../../interface/SubService';
 import { Problem } from '../../interface/Problem';
 import { SubCategory } from '../../model/subcategory-service.model';
 import { Quote } from '../../interface/Devis';
+import { getInitials } from '../../func/global.function';
 
 @Component({
   selector: 'app-invoicemanager',
@@ -76,6 +77,9 @@ export class InvoicemanagerComponent implements OnChanges {
       this.selectedDevis = undefined;
       this.usegetDevisByProblem.refetch();
     }
+  }
+  getInitialName(name: string) {
+    return getInitials(name);
   }
   showDialog() {
     this.visible_modal = true;

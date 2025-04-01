@@ -37,7 +37,13 @@ export class LoginformComponent {
       this.password = '';
     } else {
       localStorage.setItem('token', response.token);
-      this.router.navigate(['/content']);
+      if (response.user_connected.role === 'mecanicien') {
+        this.router.navigate(['/content/boardmecano']);
+      } else if (response.user_connected.role === 'client') {
+        this.router.navigate(['/content/myrepair']);
+      } else {
+        this.router.navigate(['/content']);
+      }
     }
   }
   isLoading() {

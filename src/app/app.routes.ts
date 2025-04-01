@@ -8,6 +8,7 @@ import { RepairComponent } from './components/repair/repair.component';
 import { QuoteComponent } from './components/quote/quote.component';
 import { TaskmecanoComponent } from './components/taskmecano/taskmecano.component';
 import { BoardmecanoComponent } from './components/boardmecano/boardmecano.component';
+import { ClientremorquageComponent } from './components/clientremorquage/clientremorquage.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -17,12 +18,16 @@ export const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'todos', component: TodosComponent },
-      { path: 'manager', loadChildren: () => import('./pages/manager/manager.routes') },
+      {
+        path: 'manager',
+        loadChildren: () => import('./pages/manager/manager.routes'),
+      },
       { path: 'mycars', component: CarusersComponent },
       { path: 'myrepair', component: RepairComponent },
       { path: 'mydevis', component: QuoteComponent },
       { path: 'task', component: TaskmecanoComponent },
       { path: 'boardmecano', component: BoardmecanoComponent },
+      { path: 'remorquage', component: ClientremorquageComponent },
     ],
   },
 ];

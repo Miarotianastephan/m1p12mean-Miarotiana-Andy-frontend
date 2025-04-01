@@ -18,10 +18,12 @@ import { Voiture } from '../../interface/Voiture';
 import { HttpClient } from '@angular/common/http';
 import { ProgressBarModule } from 'primeng/progressbar';
 interface model {
+  _id: string;
   modelName: string;
   year: number;
 }
-interface voiture {
+interface Brand {
+  _id: string;
   brand: string;
   models: [model];
 }
@@ -45,119 +47,40 @@ interface voiture {
 })
 export class CarusersComponent implements OnInit {
   visible: boolean = false;
-  selectedbrand: voiture | undefined;
+  selectedbrand: Brand | undefined;
   selectedModel: model | undefined;
-  selectType: string = '';
+  selectType: string | undefined;
   models: [model] | undefined;
-  uploadedFiles: any[] = [];
   Type: any[] = [];
-  voitures: any[] = [];
-  marque: any[] = [];
   mileage: number = 1;
   year: number = 2000;
   plaque: string = '';
   chasis: string = '';
-  imagevoiture: string = '';
+  imagevoiture: string | undefined;
   uploading: boolean = false;
   constructor(
     private queryClient: QueryClient,
     private router: Router,
     private http: HttpClient
   ) {}
+  ngOnInit(): void {
+    this.Type = [{ name: 'Manuel' }, { name: 'Automatique' }];
+  }
+  initVal() {
+    this.selectedbrand = undefined;
+    this.selectedModel = undefined;
+    this.selectType = undefined;
+    this.plaque = '';
+    this.chasis = '';
+  }
   showDialog() {
     this.visible = true;
   }
   showSelectedBrand() {
     if (this.selectedbrand !== undefined) {
+      console.log(this.selectedbrand);
       this.models = this.selectedbrand.models;
     }
-  }
-
-  onUpload(event: any) {
-    for (let file of event.files) {
-      this.uploadedFiles.push(file);
-      console.log(this.uploadedFiles);
-    }
-  }
-
-  ngOnInit(): void {
-    this.Type = [{ name: 'Manuel' }, { name: 'Automatique' }];
-
-    this.voitures = [
-      {
-        marque: 'Toyota',
-        model: 'Corolla',
-        kilometrage: 85000,
-        annee: 2018,
-        type: 'Automatique',
-        imageVoiture: [
-          'https://primefaces.org/cdn/primeng/images/card-ng.jpg',
-          'https://primefaces.org/cdn/primeng/images/card-ng.jpg',
-        ],
-      },
-      {
-        marque: 'BMW',
-        model: 'Serie 3',
-        kilometrage: 120000,
-        annee: 2016,
-        type: 'Manuel',
-        imageVoiture: ['https://primefaces.org/cdn/primeng/images/card-ng.jpg'],
-      },
-      {
-        marque: 'Peugeot',
-        model: '208',
-        kilometrage: 45000,
-        annee: 2020,
-        type: 'Automatique',
-        imageVoiture: [
-          'https://primefaces.org/cdn/primeng/images/card-ng.jpg',
-          'https://primefaces.org/cdn/primeng/images/card-ng.jpg',
-        ],
-      },
-    ];
-
-    this.marque = [
-      {
-        brand: 'Toyota',
-        models: [
-          { modelName: 'Corolla', year: 2023 },
-          { modelName: 'Camry', year: 2022 },
-          { modelName: 'RAV4', year: 2024 },
-        ],
-      },
-      {
-        brand: 'Honda',
-        models: [
-          { modelName: 'Civic', year: 2023 },
-          { modelName: 'Accord', year: 2022 },
-          { modelName: 'CR-V', year: 2024 },
-        ],
-      },
-      {
-        brand: 'Ford',
-        models: [
-          { modelName: 'Focus', year: 2023 },
-          { modelName: 'Mustang', year: 2022 },
-          { modelName: 'Explorer', year: 2024 },
-        ],
-      },
-      {
-        brand: 'BMW',
-        models: [
-          { modelName: 'Series 3', year: 2023 },
-          { modelName: 'Series 5', year: 2022 },
-          { modelName: 'X5', year: 2024 },
-        ],
-      },
-      {
-        brand: 'Mercedes-Benz',
-        models: [
-          { modelName: 'C-Class', year: 2023 },
-          { modelName: 'E-Class', year: 2022 },
-          { modelName: 'GLC', year: 2024 },
-        ],
-      },
-    ];
   }
   async CreateCar(body: any) {
     try {
@@ -173,7 +96,31 @@ export class CarusersComponent implements OnInit {
     mutationFn: (body: any) => this.CreateCar(body),
     onError() {},
     onSuccess() {},
+    onSettled: () => {
+      this.queryClient.invalidateQueries({
+        queryKey: ['carsUser', localStorage.getItem('token')],
+      });
+    },
   }));
+
+  async onAddCar() {
+    const reponse = await this.useCreateCar.mutateAsync({
+      brandId: this.selectedbrand?._id,
+      brand: this.selectedbrand?.brand,
+      modelId: this.selectedModel?._id,
+      model: this.selectedModel?.modelName,
+      year: this.year,
+      registrationNumber: this.plaque,
+      chassisNumber: this.chasis,
+      imagefile: this.imagevoiture,
+      type: this.selectType,
+      mileage: this.mileage,
+    });
+    if (reponse.succes === true) {
+      this.initVal();
+      this.visible = false;
+    }
+  }
 
   uploadToImageBB(event: any) {
     const file = event.files[0];
@@ -198,30 +145,38 @@ export class CarusersComponent implements OnInit {
         }
       );
   }
-  async onAddCar() {
-    console.log('------------------------');
-    console.log(this.selectedbrand);
-    console.log(this.selectedModel);
-    console.log(this.Type);
-    console.log(this.chasis);
-    console.log(this.plaque);
-    console.log(this.mileage);
-    console.log(this.year);
-    console.log(this.uploadedFiles);
-    console.log('------------------------');
-    const body = {
-      brandId: this.selectedbrand?.brand,
-      brand: this.selectedbrand,
-      modelId: this.selectedModel,
-      model: this.selectedModel,
-      year: this.year,
-      registrationNumber: this.plaque,
-      chassisNumber: this.chasis,
-      imagefile: this.uploadedFiles,
-    };
-    const reponse = await this.useCreateCar.mutateAsync({ body });
-    console.log(reponse);
+  ongetBrands(): Brand[] {
+    const reponse = this.usegetgetBrands.data().data;
+    return reponse;
   }
+  onLoadinggetBrands() {
+    return this.usegetgetBrands.isPending();
+  }
+  onErrorgetBrands() {
+    return this.usegetgetBrands.isError();
+  }
+  async getBrands() {
+    try {
+      const response = await instanceAxios.get('/client/getbrands', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      this.router.navigate(['/']);
+    }
+  }
+
+  usegetgetBrands = injectQuery(() => ({
+    queryKey: ['getBrands', localStorage.getItem('token')],
+    queryFn: this.getBrands,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  }));
+
   onFetchedCar(): Voiture[] {
     const reponse = this.usegetCarsUser.data().data;
     return reponse;

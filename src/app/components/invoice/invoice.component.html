@@ -30,7 +30,16 @@
   >
     <span class="text-sm"> Aucun version de devis selectionner </span>
   </div>
-  <div *ngIf="selectedDevis !== undefined" class="flex justify-end p-2 gap-2">
+  <div
+    *ngIf="selectedDevis !== undefined"
+    class="flex justify-end p-2 gap-2 items-center"
+  >
+    <p-tag
+      *ngIf="selectedDevis.isAccepted"
+      icon="pi pi-check-circle"
+      severity="success"
+      value="Accepter"
+    />
     <p-button
       *ngIf="!problem.have_devis"
       [outlined]="true"
@@ -46,6 +55,7 @@
       [badge]="selectedDevis.commentaire.length.toString()"
       icon="pi pi-comment"
       label="Commentaire"
+      size="small"
     />
     <button pButton>
       <i class="pi pi-file-export" pButtonIcon></i>
@@ -127,14 +137,13 @@
   </div>
 </div>
 <p-drawer
-  header="Commentaire"
   [(visible)]="visible"
   styleClass="!w-full md:!w-80 lg:!w-[30rem]"
   position="right"
   *ngIf="selectedDevis !== undefined"
 >
-  <form action="">
-    <p-floatlabel variant="in">
+  <form class="mt-1">
+    <p-floatlabel variant="on">
       <textarea
         pTextarea
         id="over_label"
@@ -170,12 +179,11 @@
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-2">
             <p-avatar
-              [image]="
+              [label]="
                 element.providerClient
-                  ? 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png'
-                  : undefined
+                  ? getInitialName(selectedDevis.nameuser)
+                  : 'G'
               "
-              [label]="element.providerClient ? undefined : 'G'"
               shape="circle"
             />
             <span class="font-bold text-sm">
