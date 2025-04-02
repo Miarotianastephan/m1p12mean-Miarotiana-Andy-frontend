@@ -42,7 +42,7 @@ export class LoginformComponent {
       } else if (response.user_connected.role === 'client') {
         this.router.navigate(['/content/myrepair']);
       } else {
-        this.router.navigate(['/content']);
+        this.router.navigate(['/content/manager/problem']);
       }
     }
   }
