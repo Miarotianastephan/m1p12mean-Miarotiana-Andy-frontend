@@ -3,6 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
+  signal,
   SimpleChanges,
 } from '@angular/core';
 import { TableModule } from 'primeng/table';
@@ -58,9 +59,18 @@ import { getInitials } from '../../func/global.function';
   styleUrl: './invoicemanager.component.css',
   standalone: true,
 })
-export class InvoicemanagerComponent implements OnChanges {
+export class InvoicemanagerComponent {
   constructor(private queryClient: QueryClient, private router: Router) {}
-  @Input() problem!: Problem;
+  private _problem = signal<Problem | null>(null); // Signal initialisé avec null
+
+  @Input()
+  set problem(value: Problem) {
+    this._problem.set(value);
+  }
+
+  get problem() {
+    return this._problem()!;
+  }
   todo!: Repair[];
   selectedDevis: Quote | undefined;
   visible: boolean = false;
@@ -72,12 +82,6 @@ export class InvoicemanagerComponent implements OnChanges {
   services: SubService[] = [];
   parts_devis: Parts[] = [];
   services_devis: SubService[] = [];
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['problem'] && this.problem) {
-      this.selectedDevis = undefined;
-      this.usegetDevisByProblem.refetch();
-    }
-  }
   getInitialName(name: string) {
     return getInitials(name);
   }
@@ -102,6 +106,7 @@ export class InvoicemanagerComponent implements OnChanges {
       commentaire: this.commentaire!,
     });
     this.commentaire = '';
+    this.visible = false;
   }
   async SendCommentaire(id_quote: String, commentaire: String) {
     try {
@@ -191,6 +196,11 @@ export class InvoicemanagerComponent implements OnChanges {
     },
     onSuccess() {
       console.log('Le devis a été créé avec succès.');
+    },
+    onSettled: () => {
+      this.queryClient.invalidateQueries({
+        queryKey: ['requestproblem', localStorage.getItem('token')],
+      });
     },
   }));
 

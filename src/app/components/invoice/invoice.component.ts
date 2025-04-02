@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
@@ -46,20 +52,23 @@ import { getInitials } from '../../func/global.function';
   styleUrl: './invoice.component.css',
   standalone: true,
 })
-export class InvoiceComponent implements OnChanges {
+export class InvoiceComponent {
   constructor(private queryClient: QueryClient, private router: Router) {}
-  @Input() problem!: Problem;
+  private _problem = signal<Problem | null>(null); // Signal initialisé avec null
+
+  @Input()
+  set problem(value: Problem) {
+    this._problem.set(value);
+  }
+
+  get problem() {
+    return this._problem()!;
+  }
   todo!: Repair[];
   selectedDevis: Quote | undefined;
   visible: boolean = false;
   visible_modal: boolean = false;
   commentaire: string | undefined;
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['problem'] && this.problem) {
-      this.selectedDevis = undefined;
-      this.usegetDevisByProblem.refetch();
-    }
-  }
   showDialog() {
     this.visible_modal = true;
   }
@@ -84,6 +93,7 @@ export class InvoiceComponent implements OnChanges {
       commentaire: this.commentaire!,
     });
     this.commentaire = '';
+    this.visible = false;
   }
   async onUseAcceptDevis() {
     const idquote_devis = this.selectedDevis!._id;
