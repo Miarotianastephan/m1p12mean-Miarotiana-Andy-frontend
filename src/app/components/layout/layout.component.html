@@ -1,14 +1,16 @@
-<div class="flex h-screen w-screen">
-  <div class="flex flex-col flex-1 w-max">
+<div class="flex flex-col h-screen">
+  <div class="flex flex-col flex-1">
     <!-- Topbar -->
     <app-header class="shadow text-white flex items-center justify-center" />
 
     <!-- Conteneur des pages -->
-    <main class="flex-1 p-2 overflow-auto bg-white max-w-full overflow-x-hidden">
+    <main
+      class="flex-1 p-2 overflow-auto bg-white max-w-full overflow-x-hidden"
+    >
       <router-outlet></router-outlet>
     </main>
-
-    <!-- Footer -->
-    <footer class="h-12 border">&copy; 2025 E-Station</footer>
   </div>
+
+  <!-- Footer -->
+  <footer class="border">&copy; 2025 E-Station</footer>
 </div>

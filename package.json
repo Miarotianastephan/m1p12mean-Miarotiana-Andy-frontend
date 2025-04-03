@@ -19,6 +19,7 @@
     "@angular/router": "^19.2.0",
     "@primeng/themes": "^19.0.9",
     "@tanstack/angular-query-experimental": "^5.68.0",
+    "@turf/turf": "^7.2.0",
     "appli-angular-vite": "file:",
     "axios": "^1.8.3",
     "chart.js": "^4.4.8",

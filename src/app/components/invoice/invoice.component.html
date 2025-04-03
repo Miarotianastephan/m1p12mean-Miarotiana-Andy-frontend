@@ -1,11 +1,35 @@
 <div class="p-2 border rounded-lg flex gap-2 items-center mb-1">
-  <span class="text-sm">{{ problem.description }}</span>
+  <span class="text-xs">{{ problem.description }}</span>
 </div>
-<p-skeleton
+<div
   *ngIf="onLoadinggetDevisByProblem()"
-  height="20rem"
-  class="flex w-full mb-2"
-/>
+  class="flex flex-col w-full mt-5 mb-2"
+>
+  <p-skeleton styleClass="mb-2" />
+  <p-skeleton width="10rem" styleClass="mb-2" />
+  <p-skeleton width="5rem" styleClass="mb-2" />
+
+  <p-table [value]="products" responsiveLayout="scroll">
+    <ng-template #header>
+      <tr class="text-sm">
+        <th>Reparation</th>
+        <th>Description</th>
+        <th>Quantite</th>
+        <th>Cost</th>
+        <th>Total Cost</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-product>
+      <tr>
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+        <td><p-skeleton /></td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
 <div *ngIf="!onLoadinggetDevisByProblem() && !onErrorgetDevisByProblem()">
   <div
     *ngIf="onUsegetDevisByProblem() as devis"

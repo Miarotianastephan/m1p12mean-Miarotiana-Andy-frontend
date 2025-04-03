@@ -69,6 +69,11 @@ export class InvoiceComponent {
   visible: boolean = false;
   visible_modal: boolean = false;
   commentaire: string | undefined;
+  products: any[] = [];
+
+  ngOnInit() {
+    this.products = Array.from({ length: 5 }).map((_, i) => `Item #${i}`);
+  }
   showDialog() {
     this.visible_modal = true;
   }

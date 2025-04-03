@@ -3,21 +3,31 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import * as L from 'leaflet';
 @Component({
   selector: 'app-clientremorquage',
-  imports: [InputTextModule, FloatLabelModule, ButtonModule, CommonModule],
+  imports: [
+    FormsModule,
+    InputTextModule,
+    FloatLabelModule,
+    ButtonModule,
+    CommonModule,
+  ],
   templateUrl: './clientremorquage.component.html',
   styleUrl: './clientremorquage.component.css',
 })
 export class ClientremorquageComponent implements OnInit, AfterViewInit {
   private map!: L.Map;
+  currentMarker: L.Marker | null = null;
+  destinationMarker: L.Marker | null = null;
+  isCurrentPositionSet: boolean = false;
   dorequest: boolean = false;
   yourposition: boolean = false;
   markers: L.Marker[] = [L.marker([-18.8792, 47.5079])];
-  private currentMarker: L.Marker | null = null; // Pour stocker le marqueur de la position actuelle
-  private destinationMarker: L.Marker | null = null; // Pour stocker le marqueur de la destination
-  private isCurrentPositionSet: boolean = false; // État pour savoir si la position actuelle est définie
+  value_position_actuel: string | null = null;
+  value_destination: string | null = null;
+  plaque_voiture: string | null = null;
   constructor() {}
 
   ngOnInit() {}
@@ -41,7 +51,7 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
     this.map = L.map('map');
     L.tileLayer(baseMapURl).addTo(this.map);
     this.map.on('click', (event: L.LeafletMouseEvent) => {
-      if (this.dorequest === true) {
+      if (this.dorequest === true && this.destinationMarker === null) {
         const latLng = event.latlng;
         if (!this.isCurrentPositionSet) {
           this.currentMarker = L.marker([latLng.lat, latLng.lng], {
@@ -52,6 +62,8 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
             .openPopup();
 
           this.isCurrentPositionSet = true;
+          this.value_position_actuel =
+            latLng.lat.toFixed(3) + ' , ' + latLng.lng.toFixed(3);
         } else {
           if (this.destinationMarker) {
             this.map.removeLayer(this.destinationMarker);
@@ -62,6 +74,9 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
             .addTo(this.map)
             .bindPopup('<b>Destination finale</b>')
             .openPopup();
+
+          this.value_destination =
+            latLng.lat.toFixed(3) + ' , ' + latLng.lng.toFixed(3);
           this.isCurrentPositionSet = false;
         }
       }

@@ -82,6 +82,11 @@ export class InvoicemanagerComponent {
   services: SubService[] = [];
   parts_devis: Parts[] = [];
   services_devis: SubService[] = [];
+  products: any[] = [];
+
+  ngOnInit() {
+    this.products = Array.from({ length: 5 }).map((_, i) => `Item #${i}`);
+  }
   getInitialName(name: string) {
     return getInitials(name);
   }

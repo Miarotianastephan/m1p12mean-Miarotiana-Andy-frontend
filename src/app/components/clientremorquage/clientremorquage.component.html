@@ -10,6 +10,8 @@
           id="Numero_plaque"
           autocomplete="off"
           class="flex w-full"
+          [(ngModel)]="plaque_voiture"
+          required
         />
         <label class="text-xs" for="Numero_plaque">Plaque voiture</label>
       </p-floatlabel>
@@ -19,6 +21,7 @@
           id="position_1"
           autocomplete="off"
           class="flex w-full"
+          [(ngModel)]="value_position_actuel"
         />
         <label class="text-xs" for="position_1">Votre position</label>
       </p-floatlabel>
@@ -28,15 +31,36 @@
           id="position_2"
           autocomplete="off"
           class="flex w-full"
+          [(ngModel)]="value_destination"
         />
         <label class="text-xs" for="position_2">Votre destination</label>
       </p-floatlabel>
-      <button pButton class="w-full" (click)="dorequest = true">
+      <button
+        pButton
+        *ngIf="destinationMarker === null"
+        class="w-full"
+        (click)="dorequest = true"
+      >
         <span class="text-xs">Faire un demande</span>
       </button>
+      <button
+        pButton
+        class="w-full"
+        *ngIf="destinationMarker !== null"
+        [disabled]="plaque_voiture === null"
+      >
+        <span class="text-xs">Envoyer le demande</span>
+      </button>
       <div class="mt-1">
-        <span class="text-xs" *ngIf="dorequest === true"
+        <span
+          class="text-xs"
+          *ngIf="dorequest === true && currentMarker === null"
           >Cliquer dans le carte ou est votre position actuel</span
+        >
+        <span
+          class="text-xs"
+          *ngIf="dorequest === true && currentMarker !== null"
+          >Cliquer dans le carte ou est votre destination</span
         >
       </div>
     </div>
