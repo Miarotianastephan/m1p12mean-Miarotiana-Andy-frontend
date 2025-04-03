@@ -7,11 +7,12 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import instanceAxios from '../../../api/axios-config';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-boardmanager',
-  imports: [Button, ChartModule, DividerModule, ButtonModule, RippleModule],
+  imports: [CommonModule, Button, ChartModule, DividerModule, ButtonModule, RippleModule],
   templateUrl: './boardmanager.component.html',
   styleUrl: './boardmanager.component.css'
 })
