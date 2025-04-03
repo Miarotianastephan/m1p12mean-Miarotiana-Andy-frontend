@@ -91,12 +91,12 @@ export class HeaderComponent implements OnInit {
           icon: 'pi pi-chart-bar',
           route: 'manager/boardmanager',
         },
-        {
-          label: 'Rendez-vous',
-          icon: 'pi pi-calendar',
-          route: 'manager/rdv',
-        },
-        { label: 'Mecanicien', icon: 'pi pi-book', route: 'manager/meca' },
+        // {
+        //   label: 'Rendez-vous',
+        //   icon: 'pi pi-calendar',
+        //   route: 'manager/rdv',
+        // },
+        // { label: 'Mecanicien', icon: 'pi pi-book', route: 'manager/meca' },
         {
           label: 'Request',
           icon: 'pi pi-question-circle',
