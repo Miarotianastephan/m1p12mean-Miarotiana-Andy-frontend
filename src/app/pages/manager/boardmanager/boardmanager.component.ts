@@ -138,18 +138,18 @@ export class BoardmanagerComponent implements OnInit{
   }
 
 //   integration revenus des 7 derniers jours 
-async fetchRevenues() {
-    try {
-      const response = await instanceAxios.get('manager/dashboard/revenues-summary', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-  
-      return response.data.revenues;
-    } catch (error) {
-      console.error("Erreur lors de la récupération des revenus :", error);
-      return [];
+    async fetchRevenues() {
+        try {
+        const response = await instanceAxios.get('manager/dashboard/revenues-summary', {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+    
+        return response.data.revenues;
+        } catch (error) {
+        console.error("Erreur lors de la récupération des revenus :", error);
+        return [];
+        }
     }
-  }
     useRevenues = injectQuery(() => ({
         queryKey: ['revenues'],
         queryFn: this.fetchRevenues,
@@ -158,4 +158,27 @@ async fetchRevenues() {
     }));
     isLoading = computed(() => this.useRevenues.isFetching());
     revenuesData = computed(() => this.useRevenues.data() || []);
+
+    async fetchTopParts() {
+        try {
+          const response = await instanceAxios.get('manager/dashboard/top-parts', {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+          });
+          return response.data.topParts || [];
+        } catch (error) {
+          console.error("Erreur lors de la récupération des pièces les plus utilisées :", error);
+          return [];
+        }
+      }
+      useTopParts = injectQuery(() => ({
+        queryKey: ['topParts'],
+        queryFn: this.fetchTopParts,
+        staleTime: Infinity,
+        refetchOnWindowFocus: false,
+      }));
+      getTopParts() {
+        return this.useTopParts.data() || [];
+      }      
+
 }
+
