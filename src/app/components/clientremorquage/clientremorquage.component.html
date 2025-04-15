@@ -48,6 +48,8 @@
         class="w-full"
         *ngIf="destinationMarker !== null"
         [disabled]="plaque_voiture === null"
+        (click)="OnUseReqeustRemorque()"
+        [loading]="useRequestRemorque.isPending()"
       >
         <span class="text-xs">Envoyer le demande</span>
       </button>
@@ -59,9 +61,30 @@
         >
         <span
           class="text-xs"
-          *ngIf="dorequest === true && currentMarker !== null"
+          *ngIf="
+            dorequest === true &&
+            currentMarker !== null &&
+            destinationMarker === null
+          "
           >Cliquer dans le carte ou est votre destination</span
         >
+        <div
+          *ngIf="destinationMarker !== null && currentMarker !== null"
+          class="flex flex-col space-y-2"
+        >
+          <div class="text-xs flex justify-between items-center">
+            <span>Distance pour le Rm : </span>
+            <span>{{ calculateDistance().km }} Km</span>
+          </div>
+          <div class="text-xs flex justify-between items-center">
+            <span>Prix par Km : </span>
+            <span>15 000 Ar</span>
+          </div>
+          <div class="text-xs flex justify-between items-center font-bold">
+            <span>Prix a payer : </span>
+            <span>{{ calculateDistance().price.toLocaleString() }} Ar</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

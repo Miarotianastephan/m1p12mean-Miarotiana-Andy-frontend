@@ -5,6 +5,14 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as L from 'leaflet';
+import * as turf from '@turf/turf';
+import instanceAxios from '../../api/axios-config';
+import {
+  injectMutation,
+  injectQuery,
+  QueryClient,
+} from '@tanstack/angular-query-experimental';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-clientremorquage',
   imports: [
@@ -28,7 +36,7 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
   value_position_actuel: string | null = null;
   value_destination: string | null = null;
   plaque_voiture: string | null = null;
-  constructor() {}
+  constructor(private queryClient: QueryClient, private router: Router) {}
 
   ngOnInit() {}
 
@@ -36,7 +44,80 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
     this.initMap();
     this.centerMap();
   }
+  initValeur() {
+    this.value_destination = null;
+    this.value_position_actuel = null;
+    this.plaque_voiture = null;
+    this.isCurrentPositionSet = false;
+    this.currentMarker = null;
+    this.destinationMarker = null;
+    this.dorequest = false;
+    this.yourposition = false;
+  }
+  onErrorgetRemorqueClient() {
+    const error = this.usegetRemorqueClient.isError();
+    return error;
+  }
+  onLoadinggetRemorqueClient() {
+    return this.usegetRemorqueClient.isPending();
+  }
+  async getRemorqueClient() {
+    try {
+      const reponse = await instanceAxios.get('/client/get_remorque', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      return reponse.data;
+    } catch (error) {
+      this.router.navigate(['/']);
+    }
+  }
 
+  usegetRemorqueClient = injectQuery(() => ({
+    queryKey: ['remorque', localStorage.getItem('token')],
+    queryFn: this.getRemorqueClient,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  }));
+
+  async RequestRemorque(body: any) {
+    try {
+      const reponse = await instanceAxios.post(
+        '/client/request_remorque',
+        body,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        }
+      );
+      return reponse.data;
+    } catch (error) {
+      this.router.navigate(['/']);
+    }
+  }
+
+  useRequestRemorque = injectMutation(() => ({
+    mutationFn: (body: any) => this.RequestRemorque(body),
+    onError() {},
+    onSuccess() {},
+    onSettled: () => {
+      this.queryClient.invalidateQueries({
+        queryKey: ['remorque', localStorage.getItem('token')],
+      });
+    },
+  }));
+  async OnUseReqeustRemorque() {
+    const reponse = await this.useRequestRemorque.mutateAsync({
+      point_current: this.value_position_actuel,
+      point_final: this.value_destination,
+    });
+    if (reponse.succes === true) {
+      this.initValeur();
+    } else {
+      alert(reponse.error);
+    }
+  }
   private initMap() {
     const iconDefault = L.icon({
       iconUrl:
@@ -49,6 +130,44 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
     });
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     this.map = L.map('map');
+    const interval = setInterval(() => {
+      if (
+        !this.onLoadinggetRemorqueClient() &&
+        !this.onErrorgetRemorqueClient() &&
+        this.usegetRemorqueClient.data()
+      ) {
+        clearInterval(interval);
+        const data = this.usegetRemorqueClient.data().data;
+        console.log('ato ooo', data);
+        data.forEach((element: any) => {
+          const split_current_place = element.point_current.split(',');
+          const split_final_place = element.point_final.split(',');
+          L.marker([split_current_place[0], split_current_place[1]], {
+            icon: iconDefault,
+          })
+            .addTo(this.map)
+            .bindPopup('<b>Position actuelle</b>')
+            .openPopup();
+          L.marker([split_final_place[0], split_final_place[1]], {
+            icon: iconDefault,
+          })
+            .addTo(this.map)
+            .bindPopup('<b>Destination finale</b>')
+            .openPopup();
+          L.polyline(
+            [
+              [split_current_place[0], split_current_place[1]],
+              [split_final_place[0], split_final_place[1]],
+            ],
+            {
+              color: 'blue',
+              weight: 4,
+              opacity: 0.7,
+            }
+          ).addTo(this.map);
+        });
+      }
+    }, 200);
     L.tileLayer(baseMapURl).addTo(this.map);
     this.map.on('click', (event: L.LeafletMouseEvent) => {
       if (this.dorequest === true && this.destinationMarker === null) {
@@ -63,11 +182,8 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
 
           this.isCurrentPositionSet = true;
           this.value_position_actuel =
-            latLng.lat.toFixed(3) + ' , ' + latLng.lng.toFixed(3);
+            latLng.lat.toFixed(3) + ',' + latLng.lng.toFixed(3);
         } else {
-          if (this.destinationMarker) {
-            this.map.removeLayer(this.destinationMarker);
-          }
           this.destinationMarker = L.marker([latLng.lat, latLng.lng], {
             icon: iconDefault,
           })
@@ -76,7 +192,7 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
             .openPopup();
 
           this.value_destination =
-            latLng.lat.toFixed(3) + ' , ' + latLng.lng.toFixed(3);
+            latLng.lat.toFixed(3) + ',' + latLng.lng.toFixed(3);
           this.isCurrentPositionSet = false;
         }
       }
@@ -88,5 +204,23 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
       this.markers.map((marker) => marker.getLatLng())
     );
     this.map.fitBounds(bounds);
+  }
+
+  calculateDistance() {
+    const from = turf.point([
+      this.currentMarker!.getLatLng().lng,
+      this.currentMarker!.getLatLng().lat,
+    ]);
+    const to = turf.point([
+      this.destinationMarker!.getLatLng().lng,
+      this.destinationMarker!.getLatLng().lat,
+    ]);
+    const distance = {
+      km: turf.distance(from, to, { units: 'kilometers' }).toFixed(2),
+      price:
+        Number(turf.distance(from, to, { units: 'kilometers' }).toFixed(2)) *
+        15000,
+    };
+    return distance;
   }
 }
