@@ -1,13 +1,13 @@
-<div class="grid grid-cols-2 gap-5 border p-3 rounded-lg">
-  <div class="rounded-lg">
-    <p-image
-      [src]="car.imageVoiture"
-      alt="Image"
-      class="rounded-lg"
-      width="400px"
-    />
-  </div>
-  <div class="flex w-full flex-col space-y-4">
+<div class="flex gap-5 border p-3 rounded-lg">
+  <div class="flex flex-col space-y-2">
+    <div class="rounded-xl">
+      <p-image
+        [src]="car.imageVoiture"
+        alt="Image"
+        class="rounded-lg"
+        [preview]="true"
+      />
+    </div>
     <div class="flex flex-col">
       <span class="font-bold text-gray-500"
         >{{ car.brand }} - {{ car.model }}</span
@@ -23,6 +23,8 @@
         <span class="text-xs">N-Chasis</span>
       </div>
     </div>
+  </div>
+  <div class="flex w-full flex-col space-y-4">
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col">
         <p-button

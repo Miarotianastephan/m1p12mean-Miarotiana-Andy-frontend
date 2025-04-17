@@ -30,7 +30,7 @@
     </ng-template>
     <ng-template #footer>
       <div class="flex flex-wrap items-center justify-between">
-        <div *ngIf="repair.mechanics.length === 0">
+        <div *ngIf="repair.mechanics.length === 0" class="p-1">
           <span class="text-xs">Aucun mecaniciens assignier</span>
         </div>
         <div *ngFor="let item_mecano of repair.mechanics">
@@ -59,9 +59,13 @@
         />
       </div>
     </ng-template>
-    <div>
-      <p class="m-0 text-xs">{{ repair.description_problem }}</p>
-      <p class="text-xs mb-2">
+    <div class="flex flex-col sapce-y-2">
+      <div
+        class="min-h-[60px] max-h-[60px] overflow-auto bg-gray-50 p-2 rounded-lg"
+      >
+        <span class="m-0 text-xs">{{ repair.description_problem }}</span>
+      </div>
+      <p class="text-xs mb-2 mt-2">
         voiture : {{ repair.marquecar }} {{ repair.modelcar }} ({{
           repair.yearcar
         }})
@@ -77,8 +81,8 @@
   *ngIf="reparation_progression"
   header="Suivi de reparation"
   [(visible)]="repartion_visible"
-  position="right"
-  styleClass="!w-full md:!w-80 lg:!w-[45rem]"
+  position="bottom"
+  styleClass="!h-auto"
 >
   <div class="flex flex-col space-y-5 p-2">
     <div class="flex justify-between">

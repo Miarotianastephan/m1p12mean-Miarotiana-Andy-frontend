@@ -7,6 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { FileUpload } from 'primeng/fileupload';
+import { SkeletonModule } from 'primeng/skeleton';
 import instanceAxios from '../../api/axios-config';
 import { Router } from '@angular/router';
 import {
@@ -41,6 +42,7 @@ interface Brand {
     FormsModule,
     FileUpload,
     ProgressBarModule,
+    SkeletonModule,
   ],
   templateUrl: './carusers.component.html',
   styleUrl: './carusers.component.css',

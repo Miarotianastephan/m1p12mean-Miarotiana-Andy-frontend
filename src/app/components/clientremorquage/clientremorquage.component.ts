@@ -160,7 +160,7 @@ export class ClientremorquageComponent implements OnInit, AfterViewInit {
               [split_final_place[0], split_final_place[1]],
             ],
             {
-              color: 'blue',
+              color: 'black',
               weight: 4,
               opacity: 0.7,
             }
